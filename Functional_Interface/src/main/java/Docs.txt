@@ -1,0 +1,79 @@
+# Java 8 Features
+1. Functional interface
+   a)Consumer - It will take any input type and consume it means there is no return type.
+   Methods :
+            i. void accept(T t)
+            where t-input
+
+           Example :
+
+           Consumer<String> c1=str->System.out.println(str);
+           c1.accept("Hello ProminentPixel");
+
+           Consumer<Integer> c2=i->System.out.println(i*2);
+           c2.accept(513);
+
+           In first example we are taking string as input, and we are printing the string "Hello ProminentPixel"
+           In second example we are taking integer as input, and we are printing the integer "513".
+
+           ii. andThen(Consumer<? super T> after)
+
+           Example :
+
+           List<Integer> l= Arrays.asList(1,2,3,4,5);
+
+           java.util.function.Consumer<List<Integer>> c3= list->{
+                  for (int i=0;i<list.size();i++){
+                           list.set(i,2*list.get(i));
+                       }
+                   };
+
+           java.util.function.Consumer<List<Integer>> c4= list->list.stream().forEach(i->System.out.print(i+" "));
+
+           c3.andThen(c4).accept(l);
+
+
+           - In above example we have taken a list and in c3 we are consuming and making every element of list double
+           - In c4 we're consuming the list and the using stream api we're printing each element.
+           - first c3 operation performed andThen method will perform use c4 to print each element.
+
+
+   b)Supplier - It always supply any type of data as per requirement and didn't take any input
+   Syntax:
+                T get()
+
+                where T is return type
+
+
+
+   c)Predicate - It will take the value and test that value.
+   Syntax:
+                i. boolean test(T t);
+                ii. or(Predicate<? super T> other) - Performing short-circuiting logical OR
+                iii. negate() - logical negation of implemented predicate
+                iv. isEqual(Object targetRef) - Check the tested contains is equals with object equals method.
+                v. 	and(Predicate<? super T> other) - Performing short-circuiting logical AND
+
+
+
+
+   d)Function - It will take one input and perform some functions on the input and give output(Different type also possible)
+   Syntax:
+                i.andThen(Function<? super R,? extends V> after) - perform and-then function first and then perform the predicate
+                ii.apply(T t) - perform some function on input and give output as per the operation.
+                iii.compose(Function<? super V,? extends T> before) - first execute the predicate and then it perform compose function.
+                iv.	identity() - return same type as input
+
+
+
+
+
+
+
+
+
+
+
+
+
+
