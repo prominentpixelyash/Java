@@ -1,0 +1,18 @@
+# Stream Api
+- Stream is a sequence of object which support various methods and with the help of pipeline we can get desire output.
+- Method :
+  1. allMatch(Predicate) - All the elements of stream is checked with given predicate if all elements satisfied the given condition it will return true else false.
+  2. anyMatch(Predicate) - All the elements of stream is checked with given predicate if any one of them is satisfied the given condition it will return true else false.
+  3. map(Function) - It will return the stream with perform some operation in stream with the help of function.
+  4. filter(Predicate) - It will return the filtered stream as per the predicate.
+  5. sorted(comparator) - It will sort the stream as per given comparator into the sort method.
+  6. forEach(Consumer) - It will take consumer and perform the operation as per the consumer on each element of the stream.
+  7. count() - this method is counting the number of element in the stream.
+  8. distinct() - this method is returning the distinct element form the stream.
+  9. min() - this method is returning the minimum element from the stream.
+  10. max() - this method is returning the maximum element from the stream.
+  11. toArray() - this method is convert the stream into array.
+  12. reduce(T identity, BinaryOperator<T> accumulator) - this method is returning the reduction value as per the identity and the accumulator function.
+  13. skip(long n) - It will skip the stream till n number from the start.
+  14. limit(long maxNum) - It will limit the stream with given maximum number to it.
+  15. flatMap(Function) - we can use this method to create stream from stream of list.
