@@ -1,0 +1,102 @@
+# Collection(I) Framework
+======================
+
+- Collection is an object which is group of object.
+- With the help of this collection framework we can manipulate the data in terms of object.
+- Collection Interface methods:
+  1. add(E e)
+  2. addAll(Collection)
+  3. remove(Object)
+  4. removeIf(Predicate)
+  5. removeAll(Collection)
+  6. size()
+  7. clear()
+  8. contains(Object o)
+  9. containsAll(collection)
+  10. toArray()
+  11. isEmpty()
+
+
+1. List(I) -
+   a) ArrayList(C)
+   b) LinkedList(C)
+   c) Stack(C)
+
+
+   a) ArrayList - ArrayList directly implementing List interface
+                - Dynamic in nature
+                - Initial capacity of ArrayList is 10
+                - It is mostly used to fast retrieval operation.
+
+                - There are three type of constructor.
+                  1.ArrayList<ObjectType> arr=new ArrayList<>();     (Zero-arg Constructor)
+                  2.ArrayList<ObjectType> arr=new ArrayList<>(Initial Capacity); (Parameterized Constructor)
+                  3.ArrayList<ObjectType> arr=new ArrayList<>(Collection); (Parameterized Constructor)
+
+
+                - Methods :
+                1. add()
+                2. clone()
+                3. contains()
+                4. clear()
+                5. forEach()
+                6. get()
+                7. indexOf()
+                8. remove(index i)
+                9. remove(Object o)
+                10. removeIf(Predicate)
+                11. removeAll(Collection)
+                12. toArray()
+                13. toArray(Object[] o)
+
+
+
+   b)LinkedList - LinkedList is made of node and node have 2 section one having address and second have the data and
+                  this type of LinkedList is call singly LinkedList.
+                - Mainly it is used when we need to add and delete data in fastly manner.
+
+                - There are two type of constructor
+                  1. LinkedList<DataType> ll=new LinkedList<>();      (Zero-Arg Constructor)
+                  2. LinkedList<DataType> ll=new LinkedList<>(Collection);   (parameterized Constructor)
+
+
+                - Methods:
+                  1. add()
+                  2. add(index i,element e)
+                  3. push()
+                  4. pop()
+                  5. poll()
+                  6. offer()
+
+
+
+
+   c)Stack -    - It is work on LIFO (Last in first out).
+
+                - Only one type of constructor
+                  1. Stack<DataType> s=new Stack<>();
+
+                - Method
+                  1.push(Item i)
+                  2.pop()
+                  3.peek()
+                  4.Empty()
+                  5.Search(Object o)
+
+
+
+
+
+
+2. Set(I) -
+   a).HashSet
+   b).LinkedHashSet
+   c).TreeSet
+
+
+   a)HashSet -
+
+
+
+
+
