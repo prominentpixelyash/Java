@@ -1,0 +1,5 @@
+ProminentTrainee{TraineeId=5, TraineeName='Abhishek', TraineeAddress='Pune', TraineeDOB=1994-11-01, TraineeJoiningDate=2017-03-21, TraineeAge=28}
+ProminentTrainee{TraineeId=1, TraineeName='Amit', TraineeAddress='Bangalore', TraineeDOB=1995-11-30, TraineeJoiningDate=2023-01-01, TraineeAge=27}
+ProminentTrainee{TraineeId=3, TraineeName='Ravi', TraineeAddress='Mumbai', TraineeDOB=1993-01-01, TraineeJoiningDate=2023-02-05, TraineeAge=30}
+ProminentTrainee{TraineeId=4, TraineeName='Deepak', TraineeAddress='Delhi', TraineeDOB=1994-11-30, TraineeJoiningDate=2023-03-21, TraineeAge=28}
+ProminentTrainee{TraineeId=2, TraineeName='Yash', TraineeAddress='Surat', TraineeDOB=1993-08-26, TraineeJoiningDate=2023-06-01, TraineeAge=29}
