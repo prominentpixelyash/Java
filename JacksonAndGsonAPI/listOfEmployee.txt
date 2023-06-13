@@ -1,0 +1,16 @@
+[ {
+  "id" : 1,
+  "name" : "Yati",
+  "department" : "Node",
+  "address" : null,
+  "type" : "MANAGER",
+  "responsibility" : "node js code"
+}, {
+  "id" : 2,
+  "name" : "Nitin",
+  "department" : "Spring Boot",
+  "address" : null,
+  "type" : "HR",
+  "hrContactNumber" : "8956231471",
+  "hrEmailId" : "nitin123@gmail.com"
+} ]

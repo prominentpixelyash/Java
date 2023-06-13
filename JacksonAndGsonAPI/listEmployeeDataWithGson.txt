@@ -1,0 +1,57 @@
+[
+  {
+    "id": 1,
+    "name": "Yati",
+    "department": "Mern",
+    "address": {
+      "street": "Krishna Nagar",
+      "city": "Junagadh",
+      "state": "Gujarat",
+      "pinCode": "500321"
+    }
+  },
+  {
+    "id": 2,
+    "name": "Nitin",
+    "department": "Java",
+    "address": {
+      "street": "Sai Nagar",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "pinCode": "758596"
+    }
+  },
+  {
+    "id": 3,
+    "name": "Yash",
+    "department": "Core Java",
+    "address": {
+      "street": "Mahadev Nagar",
+      "city": "Surat",
+      "state": "Gujarat",
+      "pinCode": "394327"
+    }
+  },
+  {
+    "id": 4,
+    "name": "Amit",
+    "department": "Processor",
+    "address": {
+      "street": "Adarsh Nagar",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "pinCode": "142536"
+    }
+  },
+  {
+    "id": 5,
+    "name": "Ravi",
+    "department": "Telecom",
+    "address": {
+      "street": "Ambika Nagar",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "pinCode": "758510"
+    }
+  }
+]

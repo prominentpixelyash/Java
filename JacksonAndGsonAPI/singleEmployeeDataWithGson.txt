@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "name": "Yati",
+  "department": "Mern",
+  "address": {
+    "street": "Krishna Nagar",
+    "city": "Junagadh",
+    "state": "Gujarat",
+    "pinCode": "500321"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "id" : 3,
+  "name" : "Yash",
+  "department" : "Core Java",
+  "address" : {
+    "street" : "Mahadev Nagar",
+    "city" : "Surat",
+    "state" : "Gujarat",
+    "pinCode" : "394327"
+  }
+}
