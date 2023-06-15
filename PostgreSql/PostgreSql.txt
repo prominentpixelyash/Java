@@ -1,0 +1,276 @@
+
+- To check the version of PostgreSQL use the following command:
+
+```sql
+select version();
+```
+
+- To create the database use the following command:
+
+```sql
+// to create a database
+CREATE DATABASE databaseName;
+
+//creating database with the name of employees_db
+Example: CREATE DATABASE employees_db;
+```
+
+- To view all databases in your local PostgreSQL use the following command line
+
+  
+
+```sql
+\l 
+```
+
+- To drop the database use the following command line
+
+```sql
+// to drop database cmd 
+DROP DATABASE databaseName;
+
+//dropping database from local Postgresql 
+DROP DATABASE employee_db;
+```
+
+- To use the database follow the below command
+
+```sql
+//use the following cmd
+\c databaseName
+
+//to use employees_db use following command
+\c employees_db;
+```
+
+- To create a table with primary key use the following command:
+
+```sql
+create table employees (
+	empId INT PRIMARY KEY,
+	emp_Name VARCHAR(50),`
+	email VARCHAR(50),
+	gender VARCHAR(50),
+	address VARCHAR(50),
+	salary VARCHAR(50)
+);
+```
+
+- To drop table use the following command:
+
+```sql
+//use the following cmd
+DROP TABLE tableName;  
+
+//to drop the table of employees
+DROP TABLE employees;
+```
+
+- Insert data into the above table:
+- To insert data into the table use the following command:
+
+```sql
+//For single data use the following command
+insert into employees (empId, emp_Name, email, gender, address, salary) values (1, 'Edlin', 'etschirschky0@irs.gov', 'Male', '18th Floor', '$116959.12'); 
+
+//Another way to insert data into a table if all column data need to insert 
+insert into employees values (1, 'Edlin', 'etschirschky0@irs.gov', 'Male', '18th Floor', '$116959.12'); 
+
+// To add more than one data use the following command 
+insert into employees (empId, emp_Name, email, gender, address, salary) values (1, 'Edlin', 'etschirschky0@irs.gov', 'Male', '18th Floor', '$116959.12');
+insert into employees (empId, emp_Name, email, gender, address, salary) values (2, 'Creight', 'clife1@eventbrite.com', 'Male', '2nd Floor', '$110098.23');
+insert into employees (empId, emp_Name, email, gender, address, salary) values (3, 'Inger', 'irosengarten2@goo.ne.jp', 'Male', 'Room 1351', '$35168.07');
+insert into employees (empId, emp_Name, email, gender, address, salary) values (4, 'Wilburt', 'wswafield3@plala.or.jp', 'Male', 'PO Box 7653', '$121797.14');
+insert into employees (empId, emp_Name, email, gender, address, salary) values (5, 'Jeanette', 'jskuce4@home.pl', 'Female', 'Suite 11', '$116576.18');
+
+//Another way to insert data into a table if all column data need to insert
+insert into employees values (1, 'Edlin', 'etschirschky0@irs.gov', 'Male', '18th Floor', '$116959.12');
+insert into employees values (2, 'Creight', 'clife1@eventbrite.com', 'Male', '2nd Floor', '$110098.23');
+insert into employees values (3, 'Inger', 'irosengarten2@goo.ne.jp', 'Male', 'Room 1351', '$35168.07');
+insert into employees values (4, 'Wilburt', 'wswafield3@plala.or.jp', 'Male', 'PO Box 7653', '$121797.14');
+insert into employees values (5, 'Jeanette', 'jskuce4@home.pl', 'Female', 'Suite 11', '$116576.18');
+```
+
+- To insert 100 data of employees is in the following file:
+
+[EMPLOYEES_DATA.csv](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/c2cddac1-b5e6-4326-9fea-a636e307c05c/EMPLOYEES_DATA.csv)
+
+### **SELECT:**
+
+- Query:
+
+```sql
+// To view all data use 
+SELECT * FROM employees;
+
+// To view partial data
+SELECT columnName,.,.,. FROM employees;
+
+//Example: 
+SELECT empId,emp_name FROM employees;
+```
+
+### WHERE:
+
+- Query:
+
+```sql
+SELECT * FROM employees WHERE empid=10;
+```
+
+- Output:
+
+```sql
+ empid | emp_name |            email             | gender |   address    |  salary
+-------+----------+------------------------------+--------+--------------+-----------
+    10 | Linc     | lmcmeekin9@independent.co.uk | Male   | PO Box 27510 | $57519.03
+```
+
+### GROUP BY:
+
+- Query:
+
+```sql
+SELECT gender,count(*) FROM employees GROUP BY gender;
+```
+
+- Output:
+
+```sql
+   gender    | count
+-------------+-------
+ Genderqueer |    13
+ Bigender    |    23
+ Genderfluid |    18
+ Male        |   429
+ Polygender  |    22
+ Non-binary  |    11
+ Female      |   464
+ Agender     |    20
+```
+
+### HAVING:
+
+- Query:
+
+```sql
+SELECT gender,count(*) FROM employees GROUP BY gender HAVING count(*)>20;
+```
+
+- Output:
+
+```sql
+   gender   | count
+------------+-------
+ Bigender   |    23
+ Male       |   429
+ Polygender |    22
+ Female     |   464
+```
+
+### ORDER BY:
+
+- Query(ASC-Ascending):
+
+```sql
+SELECT * FROM employees ORDER BY emp_name;
+```
+
+- Output:
+
+```sql
+ empid |   emp_name   |                email                |   gender    |   address    |  salary
+-------+--------------+-------------------------------------+-------------+--------------+-----------
+    69 | Abramo       | akinig1w@independent.co.uk          | Male        | Apt 358      | $48658.49
+    45 | Alfi         | abagnold18@shareasale.com           | Female      | PO Box 49071 | $43939.77
+    99 | Anne-corinne | apinnigar2q@topsy.com               | Polygender  | Room 1672    | $21306.80
+    37 | Antin        | ameconi10@hc360.com                 | Male        | Room 284     | $22056.21
+    34 | Bald         | bsparex@usda.gov                    | Male        | Suite 31     | $12212.64
+     7 | Barbi        | bhartrick6@php.net                  | Female      | Room 1190    | $45631.49
+    42 | Beck         | bchallenger15@buzzfeed.com          | Male        | Room 3       | $34572.28
+     2 | Belle        | bfoden1@comsenz.com                 | Female      | PO Box 55582 | $39855.34
+    68 | Blinni       | bsturch1v@cbsnews.com               | Genderqueer | Room 360     | $38989.21
+    75 | Bourke       | bcragoe22@qq.com                    | Male        | 6th Floor    | $73549.88
+    52 | Brier        | bgergely1f@360.cn                   | Female      | Suite 51     | $36783.84
+    67 | Caryn        | cvalance1u@cyberchimps.com          | Female      | PO Box 78200 | $37503.91
+    23 | Catherina    | cgossanm@w3.org                     | Female      | Room 1721    | $64673.74
+    80 | Chan         | cphoebe27@xrea.com                  | Male        | Room 891     | $74033.33
+    83 | Charlton     | cogrady2a@flavors.me                | Male        | Apt 842      | $36349.80
+    25 | Cheslie      | corringeo@dyndns.org                | Genderfluid | Room 1636    | $55401.77
+    89 | Christiano   | ccreeboe2g@nifty.com                | Male        | 4th Floor    | $22022.62
+    38 | Constantino  | cwhitaker11@cafepress.com           | Male        | 7th Floor    | $39546.95
+    79 | Corey        | clys26@123-reg.co.uk                | Male        | PO Box 69403 | $42901.87
+    14 | Cornelius    | cmorleyd@rediff.com                 | Polygender  | Suite 30     | $71874.56
+    76 | Dalston      | dsiuda23@rambler.ru                 | Male        | Apt 1128     | $15103.80
+    66 | Darcy        | drash1t@twitter.com                 | Male        | Suite 13     | $41099.53
+    30 | Darcy        | dcluest@slate.com                   | Male        | PO Box 81255 | $67690.84
+    19 | Desi         | dhollyari@clickbank.net             | Male        | Room 1189    | $52685.28
+    31 | Devonne      | dizacenkou@auda.org.au              | Female      | 6th Floor    | $69624.53
+    16 | Doe          | dteodorof@salon.com                 | Non-binary  | PO Box 64897 | $39988.17
+    24 | Donnie       | dklasn@imageshack.us                | Male        | Apt 1515     | $42543.69
+    53 | Early        | edeesly1g@elpais.com                | Male        | 1st Floor    | $55965.35
+    65 | Elden        | eworlock1s@mediafire.com            | Male        | Apt 1483     | $39748.06
+    32 | Elka         | eyankovv@cyberchimps.com            | Female      | Apt 1012     | $50556.93
+    43 | Emmeline     | edopson16@ftc.gov                   | Female      | 3rd Floor    | $23527.82
+    91 | Evelyn       | ecolaton2i@behance.net              | Female      | Suite 25     | $55456.51
+    12 | Faye         | fgeorgeonb@cbsnews.com              | Female      | 15th Floor   | $65134.81
+   100 | Ferguson     | fhardin2r@printfriendly.com         | Genderqueer | 11th Floor   | $51425.25
+    39 | Fianna       | fdorton12@surveymonkey.com          | Female      | 12th Floor   | $60328.04
+    28 | Georgetta    | gdoldenr@sfgate.com                 | Female      | Room 1870    | $41946.87
+     1 | Gerry        | gfewkes0@zimbio.com                 | Male        | Apt 480      | $8373.17
+    56 | Gloria       | gcartmael1j@scribd.com              | Female      | Room 705     | $46695.62
+    10 | Gris         | gmatveichev9@sakura.ne.jp           | Male        | Room 385     | $7469.84
+    78 | Haywood      | hcrighton25@cornell.edu             | Male        | 7th Floor    | $26580.54
+    74 | Heath        | hvanderweedenburg21@theatlantic.com | Male        | Room 1468    | $67533.16
+    44 | Hynda        | hbradburne17@washingtonpost.com     | Female      | PO Box 84724 | $10182.96
+     5 | Imojean      | idefilippis4@skyrock.com            | Female      | Room 1626    | $28831.47
+    82 | Ingeborg     | ibenedit29@psu.edu                  | Female      | PO Box 67126 | $30589.79
+    84 | Ivory        | icowe2b@jugem.jp                    | Female      | 20th Floor   | $31747.87
+    35 | Jack         | jscuttery@disqus.com                | Male        | PO Box 22334 | $8734.52
+    71 | Jacobo       | jneilson1y@behance.net              | Male        | Room 1881    | $6036.23
+```
+
+- Query(DESC-Descending):
+
+```sql
+SELECT * FROM employees ORDER BY empid DESC LIMIT 10;
+```
+
+- Output:
+
+```sql
+ empid |   emp_name   |             email              |   gender    |   address    |  salary
+-------+--------------+--------------------------------+-------------+--------------+-----------
+   100 | Ferguson     | fhardin2r@printfriendly.com    | Genderqueer | 11th Floor   | $51425.25
+    99 | Anne-corinne | apinnigar2q@topsy.com          | Polygender  | Room 1672    | $21306.80
+    98 | Major        | meddow2p@edublogs.org          | Male        | Room 1310    | $27271.02
+    97 | Marena       | msarchwell2o@abc.net.au        | Female      | 12th Floor   | $16487.59
+    96 | Leelah       | lasquez2n@geocities.com        | Female      | 15th Floor   | $42089.24
+    95 | Josie        | jkirtley2m@blogtalkradio.com   | Female      | Suite 80     | $37497.23
+    94 | Stuart       | swestby2l@shutterfly.com       | Male        | PO Box 33914 | $24520.84
+    93 | Niccolo      | nkettlewell2k@surveymonkey.com | Male        | Room 1027    | $7582.31
+    92 | Johanna      | jlipmann2j@constantcontact.com | Female      | PO Box 63962 | $23296.41
+    91 | Evelyn       | ecolaton2i@behance.net         | Female      | Suite 25     | $55456.51
+```
+
+### LIMIT:
+
+- Query:
+
+```sql
+SELECT * FROM employees ORDER BY empid LIMIT 10;
+```
+
+- Output:
+ empid | emp_name |           email           | gender |   address    |  salary
+-------+----------+---------------------------+--------+--------------+-----------
+     1 | Gerry    | gfewkes0@zimbio.com       | Male   | Apt 480      | $8373.17
+     2 | Belle    | bfoden1@comsenz.com       | Female | PO Box 55582 | $39855.34
+     3 | Mort     | mbuntain2@ask.com         | Male   | Suite 86     | $13992.40
+     4 | Kendall  | kbrandle3@reference.com   | Male   | Suite 45     | $72554.75
+     5 | Imojean  | idefilippis4@skyrock.com  | Female | Room 1626    | $28831.47
+     6 | Taite    | thurler5@twitter.com      | Male   | PO Box 82894 | $38036.06
+     7 | Barbi    | bhartrick6@php.net        | Female | Room 1190    | $45631.49
+     8 | Thor     | tglasard7@irs.gov         | Male   | Apt 1420     | $14114.10
+     9 | Phyllys  | pboughtflower8@fema.gov   | Female | 13th Floor   | $10464.30
+    10 | Gris     | gmatveichev9@sakura.ne.jp | Male   | Room 385     | $7469.84
