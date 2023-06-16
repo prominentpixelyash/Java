@@ -1,0 +1,624 @@
+GET _cluster/health
+GET _cat/nodes?v
+GET _cat/shards?v
+
+
+
+# to create default parameter index
+PUT students
+
+
+
+
+# to delete index
+DELETE students
+
+
+
+
+
+# to create own parameter indedx
+PUT students
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 2
+  }
+}
+
+
+
+
+# to post the doc in index 
+POST students/_doc
+{
+  "name":"Yati",
+  "address":"Surat"
+}
+
+# to post the doc with our _id
+POST students/_doc/123456789
+{
+  "name":"Nitin",
+  "address":"Mumbai"
+}
+
+
+
+
+# to get doc 
+GET students/_doc/wsoDv4gBC8Nnvp7MHe6a
+
+
+
+
+
+# to get all docs
+GET students/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+
+
+
+# to replace the doc
+PUT students/_doc/123456789
+{
+  "address":"Pune",
+  "post":"spring boot developer"
+}
+
+
+
+
+# to delete doc
+DELETE students/_doc/123456789
+
+
+
+
+# to update the student 
+POST students/_update/123456789
+{
+  "doc": {
+
+    "address":"Pune",
+    "curr_add":"Surat"
+    
+  }
+}
+
+
+
+# update the doc with doc
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  
+  "doc": {
+    
+    "age":23
+    
+  }
+  
+}
+
+
+# to replace the doc with post
+POST students/_doc/123456789
+{
+  "name":"Nitin",
+  "address":"Mumbai"
+}
+
+
+
+
+
+# script in docs
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  
+  "script": {
+    
+    "source": "ctx._source.age=24"
+    
+  }
+  
+}
+
+
+
+
+
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  "script": {
+    
+    "source": "ctx._source.age=params.new_age",
+    "params": {
+      "new_age":5
+    }
+    
+  }
+}
+
+
+
+
+
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  "script": {
+    "source": """
+    
+    if(ctx._source.age<=0){
+      ctx.op='noop'
+    }
+    else{
+     ctx._source.age--; 
+    }"""
+  }
+}
+
+
+
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  "script": {
+    "source": """
+    
+    if(ctx._source.age<=0){
+      ctx.op='delete'
+    }
+    else{
+     ctx._source.age--; 
+    }"""
+  }
+}
+
+
+
+
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  "script": {
+    "source": """
+    
+    if(ctx._source.age<=0){
+      ctx.op='delete'
+    }
+    else{
+     ctx._source.age--; 
+    }"""
+  },
+  
+  "upsert": {
+    
+      "name":"Yati",
+      "address":"Surat"
+    
+  }
+  
+}
+
+
+
+
+
+
+DELETE tvshows
+
+
+GET tvshows/_search
+{
+  "query": {
+    
+    "match_all": {}
+    
+  }
+}
+
+
+GET tvshows/_search
+{
+  "size": 100, 
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+#direct search with match query
+GET tvshows/_search
+{
+  "size": 25, 
+  "query": {
+    "match": {
+      "Name of the show": "man"
+    }
+  }
+}
+
+
+# match with and operator 
+GET tvshows/_search
+{
+  "query": {
+    "match": {
+      "Name of the show": {
+        "query":"the terror",
+        "operator":"and"
+      }
+    }
+  }
+}
+
+
+GET tvshows/_search
+{
+  "query": {
+    "match": {
+      "Name of the show": {
+        "query":"the man",
+        "operator":"and"
+      }
+    }
+  }
+}
+
+
+
+
+
+#search with field parameter match query
+GET tvshows/_search
+{
+  "query": {
+    "match": {
+      "Name of the show": {
+        "query":"th terr",
+        "operator":"and",
+        "fuzziness":2
+      }
+    }
+  }
+}
+
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "match": {
+      "Name of the show": "The"
+    }
+  }
+}
+
+
+
+// multi_match query 
+GET tvshows/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Action",
+      "fields": ["Name of the show","Genre"],
+      "operator": "OR",
+      "type": "cross_fields"
+    }
+  }
+}
+
+
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "query_string": {
+      "default_field": "Name of the show",
+      "query": "the man",
+      "default_operator": "AND"
+    }
+  }
+}
+
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "range": {
+      "IMDb rating": {
+        "gte": 8.5,
+        "lte": 10
+      }
+    }
+  }
+}
+
+
+GET tvshows/_search
+{
+  "query": {
+    "match_phrase": {
+      "Name of the show": "family Man"
+    }
+  }
+}
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"match": {
+          "Name of the show": "The"
+        }},
+        {
+          "match": {
+            "Language": "Hindi"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "Name of the show": "Man"
+          }
+          
+        },
+        {
+          "match": {
+            "Name of the show": "Terror"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "match": {
+            "Name of the show": "THE"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Name of the show": "Man"
+          }
+        },
+        {"match": {
+          "Language": "English"
+        }
+        }
+      ],
+      "should": [
+        {
+          "match": {
+            "IMDb rating": "4.5"
+          }
+        }
+      ],
+      "must_not": [
+        {"match": {
+          "Name of the show": "Adventures"
+        }}
+      ]
+      
+    }
+  }
+}
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+#avg aggregation 
+POST tvshows/_search
+{
+  "aggs": {
+    "AvgRating": {
+      "avg": {
+        "field": "IMDb rating"
+      }
+    }
+  }
+}
+
+
+POST tvshows/_search
+{
+  "aggs": {
+    "minSeasons": {
+      "min": {
+        "field": "No of seasons available"
+      }
+    }
+  }
+}
+
+
+
+
+POST tvshows/_search
+{
+  "aggs": {
+    "maxSeasons": {
+      "max": {
+        "field": "No of seasons available"
+      }
+    }
+  }
+}
+
+
+
+POST tvshows/_search
+{
+  "aggs": {
+    "sumOfSerialNumer": {
+      "sum": {
+        "field": "S_no_"
+      }
+    }
+  }
+}
+
+
+POST tvshows/_search
+{
+  "aggs": {
+    "totalStats": {
+      "stats": {
+        "field": "No of seasons available"
+      }
+    }
+  }
+}
+
+
+
+POST tvshows/_search
+{
+  "aggs": {
+    "distinctRatingCount": {
+      "cardinality": {
+        "field": "S_no_"
+      }
+    }
+  }
+}
+
+
+
+POST tvshows/_search
+{
+  "size": 0, 
+  "aggs": {
+    "distinctSeasonsCount": {
+      "cardinality": {
+        "field": "No of seasons available"
+      }
+    }
+  }
+}
+
+
+
+
+GET person/_search
+{
+  "size": 20, 
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+
+POST person/_doc
+{
+          "zipcode": 395005,
+          "country": "India",
+          "streetname": "tathi nagar",
+          "city": "surat",
+          "state": "gujarat",
+          "personname": "Satis"
+}
+
+
+POST person/_search
+{
+  "size": 0, 
+  "aggs": {
+    "countryCount": {
+      "terms": {
+        "field": "country"
+      }
+    }
+  }
+}
+
+
+
+POST person/_search
+{
+  "size": 0, 
+  "aggs": {
+    "countrywithsatte": {
+      "terms": {
+        "field": "country"
+      },
+      "aggs": {
+        "stateCount": {
+          "terms": {
+            "field": "state"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
