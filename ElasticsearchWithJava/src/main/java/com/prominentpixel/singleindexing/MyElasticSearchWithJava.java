@@ -1,7 +1,9 @@
-package com.prominentpixel;
+package com.prominentpixel.singleindexing;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.prominentpixel.bulk.MyBulkOperation;
+import com.prominentpixel.searching.MySearchingOperation;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -112,13 +114,14 @@ public class MyElasticSearchWithJava {
 
     public static void main(String[] args) throws IOException, URISyntaxException {
 
-       MyElasticSearchWithJava myElasticSearchWithJava=new MyElasticSearchWithJava();
-       myElasticSearchWithJava.singleIndexingOfDocument();
-       myElasticSearchWithJava.getDocument();
-       myElasticSearchWithJava.updateDocument();
-       myElasticSearchWithJava.getDocument();
-       myElasticSearchWithJava.deleteDocument();
-       myElasticSearchWithJava.getDocument();
+        MyElasticSearchWithJava myElasticSearchWithJava=new MyElasticSearchWithJava();
+        myElasticSearchWithJava.singleIndexingOfDocument();
+        myElasticSearchWithJava.getDocument();
+        myElasticSearchWithJava.updateDocument();
+        myElasticSearchWithJava.getDocument();
+        myElasticSearchWithJava.deleteDocument();
+        myElasticSearchWithJava.getDocument();
+
     }
 
 }

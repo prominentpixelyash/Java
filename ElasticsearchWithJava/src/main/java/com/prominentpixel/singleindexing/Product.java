@@ -1,4 +1,4 @@
-package com.prominentpixel;
+package com.prominentpixel.singleindexing;
 
 import java.util.Objects;
 
