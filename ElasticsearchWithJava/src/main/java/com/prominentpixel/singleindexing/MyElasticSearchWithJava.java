@@ -2,8 +2,6 @@ package com.prominentpixel.singleindexing;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.prominentpixel.bulk.MyBulkOperation;
-import com.prominentpixel.searching.MySearchingOperation;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
@@ -11,12 +9,18 @@ import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
 import java.net.URI;
@@ -112,7 +116,9 @@ public class MyElasticSearchWithJava {
     }
 
 
-    public static void main(String[] args) throws IOException, URISyntaxException {
+
+
+    public static void main(String[] args){
 
         MyElasticSearchWithJava myElasticSearchWithJava=new MyElasticSearchWithJava();
         myElasticSearchWithJava.singleIndexingOfDocument();
@@ -121,6 +127,8 @@ public class MyElasticSearchWithJava {
         myElasticSearchWithJava.getDocument();
         myElasticSearchWithJava.deleteDocument();
         myElasticSearchWithJava.getDocument();
+
+
 
     }
 

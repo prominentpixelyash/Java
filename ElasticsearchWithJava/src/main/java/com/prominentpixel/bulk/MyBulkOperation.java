@@ -11,10 +11,15 @@ import org.elasticsearch.action.get.MultiGetRequest;
 import org.elasticsearch.action.get.MultiGetResponse;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.search.MultiSearchRequest;
+import org.elasticsearch.action.search.MultiSearchResponse;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
 import java.net.URI;
@@ -74,7 +79,7 @@ public class MyBulkOperation {
         for (ProductData product:listOfProducts){
 
             try {
-                indexRequest=new IndexRequest("products").id(product.getProductId()+"").source(new ObjectMapper().writeValueAsString(product), XContentType.JSON);
+                indexRequest=new IndexRequest("products").id(String.valueOf(product.getProductId())).source(new ObjectMapper().writeValueAsString(product), XContentType.JSON);
 
                 bulkRequest.add(indexRequest);
 
@@ -121,13 +126,39 @@ public class MyBulkOperation {
     }
 
 
+    public void getMultiSearch(){
+
+        MultiSearchRequest msr=new MultiSearchRequest();
+
+        SearchRequest sr1=new SearchRequest().indices("products").source(new SearchSourceBuilder().query(QueryBuilders.matchQuery("productCategory","Textile")));
+
+        msr.add(sr1);
+
+        SearchRequest sr2=new SearchRequest().indices("products").source(new SearchSourceBuilder().query(QueryBuilders.matchQuery("madeInCountry","India")));
+
+        msr.add(sr2);
+
+        try (RestHighLevelClient client=getClient()){
+
+            MultiSearchResponse response=client.msearch(msr,RequestOptions.DEFAULT);
+
+            for (MultiSearchResponse.Item item:response.getResponses()){
+                System.out.println(item.getResponse());
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
     public static void main(String[] args) {
 
         MyBulkOperation bulkOperation=new MyBulkOperation();
         bulkOperation.myBulkIndexing();
         bulkOperation.bulkMultiGet();
-
-
+        bulkOperation.getMultiSearch();
 
     }
 
