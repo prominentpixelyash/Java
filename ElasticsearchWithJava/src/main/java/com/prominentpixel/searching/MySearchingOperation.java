@@ -1,7 +1,6 @@
 package com.prominentpixel.searching;
 
 import org.apache.http.HttpHost;
-import org.apache.lucene.queryparser.xml.builders.BooleanQueryBuilder;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -10,9 +9,7 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.MatchAllQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
@@ -189,8 +186,10 @@ public class MySearchingOperation {
 
             System.out.println(q);
 
-//            SearchHit[] hits=response.getHits().getHits();
-//
+            SearchHit[] hits=response.getHits().getHits();
+
+            System.out.println(q);
+
 //            printSearchHitArray(hits);
 
         } catch (IOException e) {

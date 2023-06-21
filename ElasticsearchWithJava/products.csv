@@ -1,0 +1,16 @@
+productId,productName,productPrice,madeCity,madeState,madeInCountry,numberOfProducts,productCategory
+1,T-shirts,1000,Surat,Gujarat,India,2000,Textile
+2,Mobile Phones,11000,City China-1,State China-1,China,20000,Electronics
+3,Gun,100000,City America-1,State America-1,America,300,Weapon
+4,Diamond,250000,City Africa-1,State Africa-1,Africa,450000,Diamond
+5,Petrol,5000,City Russia-1,State Russia-1,Russia,800000,Oil and Gas
+6,Spices,4500,Udaipur,Rajasthan,India,960000,Food
+7,Teddy,250,City China-2,State China-2,China,22500,Toys
+8,Iphone,75000,City America-2,State America-2,America,1560,Electronics
+9,Bearing,25111,City Japan-1,State Japan-1,Japan,142536,Mach-Industries
+10,Cars,7120,City Korea-1,State Korea-1,Korea,500,Vehicle Industries
+11,Gens,7500,Surat,Gujarat,India,142536,Textile
+12,laptop,45000,City China-1,State China-1,China,1596,Electronics
+13,Tanks,5555555,City America-1,State America-1,America,55,Weapon
+14,Tea,2500,City Africa-1,State Africa-1,Africa,450000,Food
+15,Natural Gas,750,City Russia-1,State Russia-1,Russia,80000000,Oil and Gas
