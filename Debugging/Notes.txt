@@ -1,0 +1,52 @@
+# Debugging
+
+- Debugging is the process to execute the program line by line to find out the problem/error.
+
+- **We have two tools for debugging**
+
+1. **Supply by JDK (JDB.exe in JDK folder)**
+- It is a CUI tool and not much popular.
+- It is not industry standards.
+1. **Supply by IDE  (Eclipse/IntelliJ etc.)**
+- It is a GUI tool and it is user-friendly.
+- It is an Industry standard.
+
+**Unit-Testing:** Programmers need to test their own code of a piece and we need to Junit tool.
+
+**Logging:** Keep tracking the application flow by generating log messages.
+
+### Where debugging is required in the company:
+
+- To find, Analyze and fix logical problems/errors.
+- If testing of the program fails we need to debug the code by running Junit in debugging.
+- To understand the flow of the program. (No one is giving the full flow of the program in the existing project).
+- After realizing production to fix the bug we need to see the log file we need to run debugging.
+
+(For example: Customer sends money by application but money is not deducted so need to check logs and start the debugging.)
+
+![What-is-Debugging.png.webp](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/61a5f3fe-f687-4fd8-88d5-be2fe156d6b0/What-is-Debugging.png.webp)
+
+**Debugging in Intellij:**
+
+- To run debugging it will proved a GUI interface to the programmer.
+- To find the logical problem/errors shortcuts are provided to execute step-by-step code.
+
+| Shortcut      | Description                                           |     |
+| ---           | ---                                                   | --- |
+| F7            | Step into                                             | Go to the inside method to flow the execution |
+| F8            | Step over                                             | It will run line-by-line code not go inside the method |
+| Shift + F8    | Step out                                              | Skip the steps and execute the code and out from the method |
+| F9            | Resume the execution                                  | It will skip the current break-point and jump to next break-point |
+| Alt + F9      | Run to the line number of the current caret(Cursor) 
+                  position / Step into selection                        | it will move to your debugging step to the cursor point |
+| Reset Frame   | Rerun a part of the program                           | It will allow us to re run the part of break point |
+| Step filter   | Skip the packages for a step into                     | It will skip the package or class if we set it on stepping in IDE setting |
+
+**Break-Point:** it is the point in the program from where the debugging is started. Till this point program is run normally and from the break-point the control comes to the programmer to execute code as per the need to debug the program.
+
+**Shortcut: ctrl+F8**
+
+There are two types of break-point:
+
+1. Method Break-Point: It is given on the method signature.
+2. Line Break-Point: It is inside the method signature and it is more popular.
