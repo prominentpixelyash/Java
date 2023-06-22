@@ -6,17 +6,23 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.index.Index;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class MyAggregation {
 
@@ -41,6 +47,8 @@ public class MyAggregation {
             SearchRequest searchRequest=new SearchRequest().indices("products").source(sourceBuilder);
 
             SearchResponse response=client.search(searchRequest, RequestOptions.DEFAULT);
+
+            System.out.println(response);
 
             Aggregations aggregations=response.getAggregations();
 
@@ -100,6 +108,125 @@ public class MyAggregation {
 
     }
 
+    public void mySumAggregation(){
+
+        try (RestHighLevelClient client=getClient()){
+
+            SearchSourceBuilder searchSourceBuilder=new SearchSourceBuilder().size(0).query(QueryBuilders.matchAllQuery()).
+                    aggregation(AggregationBuilders.sum("totalNetWorth").field("productPrice"));
+
+            SearchRequest searchRequest=new SearchRequest().indices("products").source(searchSourceBuilder);
+
+            SearchResponse response=client.search(searchRequest,RequestOptions.DEFAULT);
+
+            System.out.println(response);
+
+            Sum sum=response.getAggregations().get("totalNetWorth");
+
+            System.out.println("Total worth of company is "+sum.getValue());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
+    public void myAvgAggregation(){
+
+
+        try (RestHighLevelClient client=getClient()){
+
+            SearchSourceBuilder searchSourceBuilder=new SearchSourceBuilder().query(QueryBuilders.matchAllQuery()).
+                    aggregation(AggregationBuilders.avg("avgPriceOfAllProduct").field("productPrice"));
+
+
+            SearchRequest searchRequest=new SearchRequest().indices("products").source(searchSourceBuilder);
+
+
+            SearchResponse response=client.search(searchRequest,RequestOptions.DEFAULT);
+
+            Avg avg=response.getAggregations().get("avgPriceOfAllProduct");
+
+            System.out.println("Average price of product is "+avg.getValue());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
+    public void myMinAggregation(){
+
+        try (RestHighLevelClient client=getClient()){
+
+            SearchSourceBuilder searchSourceBuilder=new SearchSourceBuilder().query(QueryBuilders.matchAllQuery()).
+                    aggregation(AggregationBuilders.min("minPrice").field("productPrice"));
+
+
+            SearchRequest searchRequest=new SearchRequest().indices("products").source(searchSourceBuilder);
+
+
+            SearchResponse response=client.search(searchRequest,RequestOptions.DEFAULT);
+
+            Min min=response.getAggregations().get("minPrice");
+
+            System.out.println("Minimum price in all product is "+min.getValue());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    public void myMaxAggregation(){
+
+        try (RestHighLevelClient client=getClient()){
+
+            SearchSourceBuilder searchSourceBuilder=new SearchSourceBuilder().query(QueryBuilders.matchAllQuery()).
+                    aggregation(AggregationBuilders.max("maxPrice").field("productPrice"));
+
+            SearchRequest searchRequest=new SearchRequest().indices("products").source(searchSourceBuilder);
+
+            SearchResponse response=client.search(searchRequest,RequestOptions.DEFAULT);
+
+            Max max=response.getAggregations().get("maxPrice");
+
+            System.out.println("Maximum price in products is "+max.getValue());
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+
+    public void myCardinality(){
+
+        try (RestHighLevelClient client=getClient()){
+
+            SearchSourceBuilder searchSourceBuilder=new SearchSourceBuilder().query(QueryBuilders.matchAllQuery()).
+                    aggregation(AggregationBuilders.cardinality("distinctCountOfCategory").field("productCategory"));
+
+            SearchRequest searchRequest=new SearchRequest().indices("products").source(searchSourceBuilder);
+
+            SearchResponse response=client.search(searchRequest,RequestOptions.DEFAULT);
+
+            Cardinality cardinality=response.getAggregations().get("distinctCountOfCategory");
+
+            System.out.println("Distinct count of category is "+cardinality.getValue());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
     public void myHighlighter(){
 
@@ -135,6 +262,16 @@ public class MyAggregation {
         aggregation.singleAggregation();
         System.out.println("***** Sub aggregation output *****");
         aggregation.subAggregation();
+        System.out.println("***** Sum aggregation output *****");
+        aggregation.mySumAggregation();
+        System.out.println("***** Avg aggregation output *****");
+        aggregation.myAvgAggregation();
+        System.out.println("***** Min aggregation output *****");
+        aggregation.myMinAggregation();
+        System.out.println("***** Max aggregation output *****");
+        aggregation.myMaxAggregation();
+        System.out.println("***** Cardinality aggregation output *****");
+        aggregation.myCardinality();
         System.out.println("***** Highlight output *****");
         aggregation.myHighlighter();
     }
