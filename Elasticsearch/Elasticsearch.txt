@@ -1,22 +1,91 @@
+# Elasticsearch
+
+- It is a search engine which is based on Apache Lucene.
+- Elasticsearch can be used **to search any kind of document**.
+- It is an analytics engine for all types of data, including textual, numerical, geospatial, structured, and unstructured.
+- It was my first release in 2010 by Elasticsearch N.V.
+- Known for its simple REST APIs, distributed nature, speed, and scalability.
+- It is using document-oriented approach instead of the Table schema.
+- It is so quick as soon as the data is imported into elastic search.
+
+### Node:
+
+- A node is a single server.
+- It is a part of the cluster, storing data and participating in the cluster’s indexing and search capability.
+
+### Cluster:
+
+- A Cluster is a collection of one or more nodes that together hold entire data.
+- It provides federated indexing and search capability across all nodes and It has a unique name.
+- We can also change its name by changing the configuration files.
+
+### Index:
+
+- It is a collection of documents with similar data.
+- It can be identified by name.
+- the name of indexing is used to index, search, update, and delete documents.
+
+### Type:
+
+- It is a partition of the index.
+- We can define one or more types inside the index.
+
+### Document:
+
+- It is a basic unit of information that can be indexed.
+- It is in the form of JSON.
+
+### Shards:
+
+- Elastic search provides subdivide index into multiple pieces known as shards.
+
+### Replica:
+
+- Elastic search provides you to make one or more copies of index shards which is known as replica shards or replica.
+
+## Elasticsearch APIs:
+
+1. Document APIs
+2. Search APIs
+3. Aggregation 
+4. Index APIs
+5. Cluster APIs
+
+## Document API:
+
+### Index:
+
+Example: 
+
+```json
+# to create a default parameter index
+PUT students
+```
+
+### Get:
+
+Example:
+
+```json
 GET _cluster/health
 GET _cat/nodes?v
 GET _cat/shards?v
 
+# to get doc with id
+GET students/_doc/wsoDv4gBC8Nnvp7MHe6a
 
+# to get all docs
+GET students/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+```
 
-# to create default parameter index
-PUT students
+### Update:
 
-
-
-
-# to delete index
-DELETE students
-
-
-
-
-
+```json
 # to create own parameter indedx
 PUT students
 {
@@ -25,9 +94,6 @@ PUT students
     "number_of_replicas": 2
   }
 }
-
-
-
 
 # to post the doc in index 
 POST students/_doc
@@ -43,43 +109,12 @@ POST students/_doc/123456789
   "address":"Mumbai"
 }
 
-
-
-
-# to get doc 
-GET students/_doc/wsoDv4gBC8Nnvp7MHe6a
-
-
-
-
-
-# to get all docs
-GET students/_search
-{
-  "query": {
-    "match_all": {}
-  }
-}
-
-
-
-
-
 # to replace the doc
 PUT students/_doc/123456789
 {
   "address":"Pune",
   "post":"spring boot developer"
 }
-
-
-
-
-# to delete doc
-DELETE students/_doc/123456789
-
-
-
 
 # to update the student 
 POST students/_update/123456789
@@ -91,8 +126,6 @@ POST students/_update/123456789
     
   }
 }
-
-
 
 # update the doc with doc
 POST students/_update/xcoPv4gBC8Nnvp7Mnu57
@@ -106,18 +139,29 @@ POST students/_update/xcoPv4gBC8Nnvp7Mnu57
   
 }
 
-
 # to replace the doc with post
 POST students/_doc/123456789
 {
   "name":"Nitin",
   "address":"Mumbai"
 }
+```
 
+### Delete:
 
+- Example:
 
+```json
+# to delete index
+DELETE students
 
+# to delete doc
+DELETE students/_doc/123456789
+```
 
+### Script in docs:
+
+```json
 # script in docs
 POST students/_update/xcoPv4gBC8Nnvp7Mnu57
 {
@@ -130,10 +174,6 @@ POST students/_update/xcoPv4gBC8Nnvp7Mnu57
   
 }
 
-
-
-
-
 POST students/_update/xcoPv4gBC8Nnvp7Mnu57
 {
   "script": {
@@ -145,10 +185,6 @@ POST students/_update/xcoPv4gBC8Nnvp7Mnu57
     
   }
 }
-
-
-
-
 
 POST students/_update/xcoPv4gBC8Nnvp7Mnu57
 {
@@ -164,8 +200,6 @@ POST students/_update/xcoPv4gBC8Nnvp7Mnu57
   }
 }
 
-
-
 POST students/_update/xcoPv4gBC8Nnvp7Mnu57
 {
   "script": {
@@ -179,9 +213,6 @@ POST students/_update/xcoPv4gBC8Nnvp7Mnu57
     }"""
   }
 }
-
-
-
 
 POST students/_update/xcoPv4gBC8Nnvp7Mnu57
 {
@@ -204,25 +235,40 @@ POST students/_update/xcoPv4gBC8Nnvp7Mnu57
   }
   
 }
+```
 
+### Query:
 
+- A query is made up of two clauses:
+1. **Leaf Query Clauses:** These clauses are match, term, or range, which look for a specific value in a specific field.
+2. **Compound Query Clauses:** These queries are a combination of leaf query clauses and other compound queries to extract the desired information.
 
+- Following types of query
+1. Full-Text Queries.
+2. Multi Match Query.
+3. Query String Query.
+4. Term Level Queries.
+5. Range Query. 
+6. Compound Queries.
 
+- Use the below CSV file
 
+[Amazon_Prime_TV_Shows_Data.csv](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cc43d866-9a1d-4482-b944-76608e73f0d3/Amazon_Prime_TV_Shows_Data.csv)
 
-DELETE tvshows
+- ****Match All Query:****
+- It will return all content from the document.
 
+```json
 
-GET tvshows/_search
+//By default we get only 10 result display
+POST tvshows/_search
 {
   "query": {
-    
     "match_all": {}
-    
   }
 }
 
-
+//It will display 100 results
 GET tvshows/_search
 {
   "size": 100, 
@@ -230,8 +276,24 @@ GET tvshows/_search
     "match_all": {}
   }
 }
+```
 
+- It will display only 10 records but it will find all records 503 because the size in search is by default 10 if we change the size in search also if we want we need to define size 25.
 
+```json
+POST tvshows/_search
+{
+  "size": 25, 
+  "query": {
+    "match_all": {}
+  }
+}
+```
+
+1. Full-Text Queries:
+- Match:
+
+```json
 #direct search with match query
 GET tvshows/_search
 {
@@ -242,7 +304,6 @@ GET tvshows/_search
     }
   }
 }
-
 
 # match with and operator 
 GET tvshows/_search
@@ -256,23 +317,6 @@ GET tvshows/_search
     }
   }
 }
-
-
-GET tvshows/_search
-{
-  "query": {
-    "match": {
-      "Name of the show": {
-        "query":"the man",
-        "operator":"and"
-      }
-    }
-  }
-}
-
-
-
-
 
 #search with field parameter match query
 GET tvshows/_search
@@ -288,20 +332,32 @@ GET tvshows/_search
   }
 }
 
-
-
-
+#direct search with a match query
 GET tvshows/_search
 {
+  "size": 25, 
   "query": {
     "match": {
-      "Name of the show": "The"
+      "Name of the show": "man"
     }
   }
 }
 
+GET tvshows/_search
+{
+  "query": {
+    "match_phrase": {
+      "Name of the show": "family Man"
+    }
+  }
+}
+```
 
+1. **Multi Match Query:**
 
+Example:
+
+```json
 // multi_match query 
 GET tvshows/_search
 {
@@ -314,11 +370,11 @@ GET tvshows/_search
     }
   }
 }
+```
 
+1. **Query String Query:**
 
-
-
-
+```json
 GET tvshows/_search
 {
   "query": {
@@ -329,10 +385,48 @@ GET tvshows/_search
     }
   }
 }
+```
 
+1. **Term Level Queries:**
 
+```json
+POST person/_search
+{
+  "size": 0, 
+  "aggs": {
+    "countryCount": {
+      "terms": {
+        "field": "country"
+      }
+    }
+  }
+}
 
+POST person/_search
+{
+  "size": 0, 
+  "aggs": {
+    "countrywithsatte": {
+      "terms": {
+        "field": "country"
+      },
+      "aggs": {
+        "stateCount": {
+          "terms": {
+            "field": "state"
+          }
+        }
+      }
+    }
+  }
+}
 
+```
+
+1. **Range Query:**
+- Example:
+
+```json
 GET tvshows/_search
 {
   "query": {
@@ -344,19 +438,12 @@ GET tvshows/_search
     }
   }
 }
+```
 
+1. **Compound Queries:**
+- Example:
 
-GET tvshows/_search
-{
-  "query": {
-    "match_phrase": {
-      "Name of the show": "family Man"
-    }
-  }
-}
-
-
-
+```json
 GET tvshows/_search
 {
   "query": {
@@ -374,8 +461,6 @@ GET tvshows/_search
     }
   }
 }
-
-
 
 GET tvshows/_search
 {
@@ -398,8 +483,6 @@ GET tvshows/_search
   }
 }
 
-
-
 GET tvshows/_search
 {
   "query": {
@@ -414,9 +497,6 @@ GET tvshows/_search
     }
   }
 }
-
-
-
 
 GET tvshows/_search
 {
@@ -449,15 +529,40 @@ GET tvshows/_search
     }
   }
 }
+```
 
+# Highlighter:
 
+- Highlighters enable you to get highlighted snippets from one or more fields in your search results so you can show users where the query matches are.
+- Elasticsearch supports three highlighters:
+1. `unified`
+2. `plain` 
+3. `fvh` (fast vector highlighter).
 
+Example:
+
+```json
 GET tvshows/_search
 {
   "query": {
-    "match_all": {}
+    "match": {
+      "Name of the show": "Man"
+    }
+  },
+  "highlight": {
+    "number_of_fragments": 1, 
+    "fields": {
+      "Name of the show": {}
+    }
   }
 }
+```
+
+# Aggregation:
+
+- Example:
+
+```json
 
 #avg aggregation 
 POST tvshows/_search
@@ -471,7 +576,6 @@ POST tvshows/_search
   }
 }
 
-
 POST tvshows/_search
 {
   "aggs": {
@@ -482,9 +586,6 @@ POST tvshows/_search
     }
   }
 }
-
-
-
 
 POST tvshows/_search
 {
@@ -497,8 +598,6 @@ POST tvshows/_search
   }
 }
 
-
-
 POST tvshows/_search
 {
   "aggs": {
@@ -509,7 +608,6 @@ POST tvshows/_search
     }
   }
 }
-
 
 POST tvshows/_search
 {
@@ -522,8 +620,6 @@ POST tvshows/_search
   }
 }
 
-
-
 POST tvshows/_search
 {
   "aggs": {
@@ -534,8 +630,6 @@ POST tvshows/_search
     }
   }
 }
-
-
 
 POST tvshows/_search
 {
@@ -549,76 +643,563 @@ POST tvshows/_search
   }
 }
 
+```
 
+CSV: 
 
+[Amazon_Prime_TV_Shows_Data.csv](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0c403fb8-cc11-4f38-a508-26a15b683cd1/Amazon_Prime_TV_Shows_Data.csv)
 
-GET person/_search
+## Field Data type:
+
+- some commonly used field data type in Elasticsearch is as follow.
+1. **Text**: Used for full-text search and indexing of textual data. Supports tokenization, stemming, and other text analysis techniques.
+2. **Keyword**: Used for exact matching and filtering. Suitable for fields with keywords, IDs, or other values that should not be tokenized.
+3. **Date**: Used for storing and indexing date and time values. Supports date-related operations like range queries and sorting.
+4. **Numeric**: Includes various numeric data types, such as **`integer`**, **`long`**, **`float`**, and **`double`**. Allows for efficient indexing and querying of numeric values.
+5. **Boolean**: Used to represent Boolean values (**`true`** or **`false`**).
+6. **Object**: Used to define complex nested structures. Allows for hierarchical organization of data within a document.
+7. **Array**: Used to store arrays or lists of values. Enables indexing and searching within arrays.
+8. **Geo-point**: Used to represent geographical coordinates (latitude and longitude). Enables spatial queries like distance calculations and bounding box searches.
+9. **Geo-shape**: Used to represent more complex geometric shapes, such as polygons or circles. Allows for spatial indexing and querying.
+
+- Example:
+
+```json
+# creating index with field data type
+PUT customers
 {
-  "size": 20, 
-  "query": {
-    "match_all": {}
-  }
-}
-
-
-
-POST person/_doc
-{
-          "zipcode": 395005,
-          "country": "India",
-          "streetname": "tathi nagar",
-          "city": "surat",
-          "state": "gujarat",
-          "personname": "Satis"
-}
-
-
-POST person/_search
-{
-  "size": 0, 
-  "aggs": {
-    "countryCount": {
-      "terms": {
-        "field": "country"
+  "mappings": {
+    "properties": {
+      "dob":{
+        "type": "date"
+      },
+      "intro":{
+        "type": "text"
+      },
+      "name":{
+        "type": "text"
+      },
+      "age":{
+        "type": "integer"
+      },
+      "marriageStatus":{
+        "type": "boolean"
       }
     }
   }
 }
 
-
-
-POST person/_search
+# view of index
 {
-  "size": 0, 
-  "aggs": {
-    "countrywithsatte": {
-      "terms": {
-        "field": "country"
-      },
-      "aggs": {
-        "stateCount": {
-          "terms": {
-            "field": "state"
+  "customers" : {
+    "aliases" : { },
+    "mappings" : {
+      "properties" : {
+        "age" : {
+          "type" : "integer"
+        },
+        "dob" : {
+          "type" : "date"
+        },
+        "intro" : {
+          "type" : "text"
+        },
+        "marriageStatus" : {
+          "type" : "boolean"
+        },
+        "name" : {
+          "type" : "text"
+        }
+      }
+    },
+    "settings" : {
+      "index" : {
+        "routing" : {
+          "allocation" : {
+            "include" : {
+              "_tier_preference" : "data_content"
+            }
           }
+        },
+        "number_of_shards" : "1",
+        "provided_name" : "customers",
+        "creation_date" : "1687430405500",
+        "number_of_replicas" : "1",
+        "uuid" : "rWEVrD1jTs6oeew3o77S-w",
+        "version" : {
+          "created" : "7100299"
         }
       }
     }
   }
 }
 
+# Example of data type 
+POST customers/_doc
+{
+  "name":"Yash",
+  "dob":"1993-08-26",
+  "age":29,
+  "marriageStatus":false,
+  "intro":"Hello I am yash rajput from surat gujarat. I have completed my graduation in Electrical Engineering in 2016 and I have 4+ year of experiance in electrical after quit my job to learn programming language and I learn Html,Css,JavaScript, core java, Advance java, JDBC, Hibernate, Spring, SpringBoot and MySql database"
+}
 
+ 
+```
 
+- Other data are available on [Official Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html)
 
+### Tokenizer:
 
+- some tokenizer are
+1. **Standard Tokenizer:** The `standard` tokenizer divides text into terms on word boundaries, as defined by the Unicode Text Segmentation algorithm. It removes most punctuation symbols. It is the best choice for most languages.
+- Example:
 
+```json
+POST _analyze
+{
+  "tokenizer": "standard",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+```
 
+1. **Letter Tokenizer:** The `letter` tokenizer divides text into terms whenever it encounters a character which is not a letter.
+- Example:
 
+```json
+POST _analyze
+{
+  "tokenizer": "letter",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+```
 
+1. **Lowercase Tokenizer:** The `lowercase` tokenizer, like the `letter` tokenizer, divides text into terms whenever it encounters a character which is not a letter, but it also lowercases all terms.
+- Example:
 
+```json
+POST _analyze
+{
+  "tokenizer": "lowercase",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+```
 
+1. **Whitespace Tokenizer:** The `whitespace` tokenizer divides text into terms whenever it encounters any whitespace character.
+- Example:
 
+```json
+POST _analyze
+{
+  "tokenizer": "whitespace",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+```
 
+1. **UAX URL Email Tokenizer:** The `uax_url_email` tokenizer is like the `standard` tokenizer except that it recognizes URLs and email addresses as single tokens.
+- Example:
 
+```json
+POST _analyze
+{
+  "tokenizer": "uax_url_email",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+```
 
+1. **Classic Tokenizer:** The `classic` tokenizer is a grammar based tokenizer for the English Language.
+- Example:
 
+```json
+POST _analyze
+{
+  "tokenizer": "classic",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+```
 
+1. **Keyword tokenizer:**  The `keyword` tokenizer is a “noop” tokenizer that accepts whatever text it is given and outputs the exact same text as a single term.
+- Example:
+
+```json
+POST _analyze
+{
+  "tokenizer": "keyword",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+```
+
+1. **Pattern Tokenizer:** The `pattern` tokenizer uses a regular expression to either split text into terms whenever it matches a word separator, or to capture matching text as terms.
+- Example:
+
+```json
+POST _analyze
+{
+  "tokenizer":{
+    "type": "pattern",
+    "pattern":","
+  },
+  "text": "Hell,o @Ya,sh to Pro,minen,tP!xel prom,inentpixel@gmail.com"
+}
+```
+
+1. **Simple Pattern Tokenizer:** The `simple_pattern` tokenizer uses a regular expression to capture matching text as terms. It uses a restricted subset of regular expression features and is generally faster than the `pattern` tokenizer.
+- Example:
+
+```json
+POST _analyze
+{
+  "tokenizer": {
+    "type":"char_group",
+    "tokenize_on_chars":[
+      "whitespace",
+      "_"
+      ]
+  },
+  "text": "H_ello @Yash to Pro_minent_P!xel prominent_pixel_@gmail.com"
+}
+```
+
+1. **Char Group Tokenizer:** he `char_group` tokenizer is configurable through sets of characters to split on, which is usually less expensive than running regular expressions.
+- Example:
+
+```json
+POST _analyze
+{
+  "tokenizer": {
+    "type":"char_group",
+    "tokenize_on_chars":[
+      "whitespace",
+      "_"
+      ]
+  },
+  "text": "H_ello @Yash to Pro_minent_P!xel prominent_pixel_@gmail.com"
+```
+
+1. **Simple Pattern Split Tokenizer:**
+
+The `simple_pattern_split` tokenizer uses the same restricted regular expression subset as the `simple_pattern` tokenizer, but splits the input at matches rather than returning the matches as terms.
+
+- Example:
+
+```json
+POST _analyze
+{
+  "tokenizer": {
+    "type": "simple_pattern_split",
+    "pattern": "_"
+  },
+  "text": "Hello @Ya_sh to Prominent_P!xel prominent_pixel_@gmail.com"
+}
+```
+
+### Filter:
+
+- Following are some type and example:
+1. **Apostrophe token filter:**
+- Strips all characters after an apostrophe, including the apostrophe itself.
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": ["apostrophe"],
+  "text": "You'r did'not know"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "You",
+          "start_offset" : 0,
+          "end_offset" : 5,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "did",
+          "start_offset" : 6,
+          "end_offset" : 13,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "know",
+          "start_offset" : 14,
+          "end_offset" : 18,
+          "type" : "<ALPHANUM>",
+          "position" : 2
+        }
+      ]
+    }
+    ```
+    
+
+1. **Classic token filter:**
+- This filter removes the English possessive (`'s`) from the end of words and removes dots from acronyms. It uses Lucene’s ClassicFilter.
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "classic",
+  "filter": ["classic"],
+  "text": "The 2 Q.U.I.C.K. Brown-Foxes jumped over the lazy dog's bone."
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "The",
+          "start_offset" : 0,
+          "end_offset" : 3,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "2",
+          "start_offset" : 4,
+          "end_offset" : 5,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "QUICK",
+          "start_offset" : 6,
+          "end_offset" : 16,
+          "type" : "<ACRONYM>",
+          "position" : 2
+        },
+        {
+          "token" : "Brown",
+          "start_offset" : 17,
+          "end_offset" : 22,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        },
+        {
+          "token" : "Foxes",
+          "start_offset" : 23,
+          "end_offset" : 28,
+          "type" : "<ALPHANUM>",
+          "position" : 4
+        },
+        {
+          "token" : "jumped",
+          "start_offset" : 29,
+          "end_offset" : 35,
+          "type" : "<ALPHANUM>",
+          "position" : 5
+        },
+        {
+          "token" : "over",
+          "start_offset" : 36,
+          "end_offset" : 40,
+          "type" : "<ALPHANUM>",
+          "position" : 6
+        },
+        {
+          "token" : "the",
+          "start_offset" : 41,
+          "end_offset" : 44,
+          "type" : "<ALPHANUM>",
+          "position" : 7
+        },
+        {
+          "token" : "lazy",
+          "start_offset" : 45,
+          "end_offset" : 49,
+          "type" : "<ALPHANUM>",
+          "position" : 8
+        },
+        {
+          "token" : "dog",
+          "start_offset" : 50,
+          "end_offset" : 55,
+          "type" : "<APOSTROPHE>",
+          "position" : 9
+        },
+        {
+          "token" : "bone",
+          "start_offset" : 56,
+          "end_offset" : 60,
+          "type" : "<ALPHANUM>",
+          "position" : 10
+        }
+      ]
+    }
+    ```
+    
+
+1. **Common grams token filter**
+
+Generates bigrams for a specified set of common words.
+
+For example, you can specify `is` and `the` as common words. This filter then converts the tokens `[the, quick, fox, is, brown]` to `[the, the_quick, quick,
+fox, fox_is, is, is_brown, brown]`.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": [{
+    "type" : "common_grams",
+    "common_words":["the","is"]
+  }],
+  "text" : "the quick fox is brown"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "the",
+          "start_offset" : 0,
+          "end_offset" : 3,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "the_quick",
+          "start_offset" : 0,
+          "end_offset" : 9,
+          "type" : "gram",
+          "position" : 0,
+          "positionLength" : 2
+        },
+        {
+          "token" : "quick",
+          "start_offset" : 4,
+          "end_offset" : 9,
+          "type" : "word",
+          "position" : 1
+        },
+        {
+          "token" : "fox",
+          "start_offset" : 10,
+          "end_offset" : 13,
+          "type" : "word",
+          "position" : 2
+        },
+        {
+          "token" : "fox_is",
+          "start_offset" : 10,
+          "end_offset" : 16,
+          "type" : "gram",
+          "position" : 2,
+          "positionLength" : 2
+        },
+        {
+          "token" : "is",
+          "start_offset" : 14,
+          "end_offset" : 16,
+          "type" : "word",
+          "position" : 3
+        },
+        {
+          "token" : "is_brown",
+          "start_offset" : 14,
+          "end_offset" : 22,
+          "type" : "gram",
+          "position" : 3,
+          "positionLength" : 2
+        },
+        {
+          "token" : "brown",
+          "start_offset" : 17,
+          "end_offset" : 22,
+          "type" : "word",
+          "position" : 4
+        }
+      ]
+    }
+    ```
+    
+
+1. **Conditional token filter:**
+- Applies a set of token filters to tokens that match conditions in a provided predicate script.
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter":[{
+    "type":"condition",
+    "filter": "lowercase",
+    "script":{
+      "source": "token.getTerm().length() < 5"
+    }
+  }],
+  "text": "THE QUICK BROWN FOX"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "the",
+          "start_offset" : 0,
+          "end_offset" : 3,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "QUICK",
+          "start_offset" : 4,
+          "end_offset" : 9,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "BROWN",
+          "start_offset" : 10,
+          "end_offset" : 15,
+          "type" : "<ALPHANUM>",
+          "position" : 2
+        },
+        {
+          "token" : "fox",
+          "start_offset" : 16,
+          "end_offset" : 19,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        }
+      ]
+    }
+    ```
+    
+
+1. **Decimal digit token filter:**
+
+Converts all digits in the Unicode `Decimal_Number` General Category to `0-9`. For example, the filter changes the Bengali numeral `৩` to `3`.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": ["decimal_digit"],
+  "text": "१-one two-२ ३"
+}
+```
+
+- Output:
