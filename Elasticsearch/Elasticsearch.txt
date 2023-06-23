@@ -1203,3 +1203,1263 @@ GET _analyze
 ```
 
 - Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "1-one",
+          "start_offset" : 0,
+          "end_offset" : 5,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "two-2",
+          "start_offset" : 6,
+          "end_offset" : 11,
+          "type" : "word",
+          "position" : 1
+        },
+        {
+          "token" : "3",
+          "start_offset" : 12,
+          "end_offset" : 13,
+          "type" : "word",
+          "position" : 2
+        }
+      ]
+    }
+    ```
+    
+
+1. **Delimited payload token filter:**  Separates a token stream into tokens and payloads based on a specified delimiter.
+- Example: you can use the `delimited_payload` filter with a `|` delimiter to split `the|1 quick|2 fox|3` into the tokens `the`, `quick`, and `fox` with respective payloads of `1`, `2`, and `3`.
+
+```json
+GET _analyze 
+{
+  "tokenizer": "whitespace"
+  , "filter": ["delimited_payload"]
+  , "text": "Special Message|20 Hello|21 Java|1 welcome |6 to|5 ProminentPixel"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "Special",
+          "start_offset" : 0,
+          "end_offset" : 7,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "Message",
+          "start_offset" : 8,
+          "end_offset" : 18,
+          "type" : "word",
+          "position" : 1
+        },
+        {
+          "token" : "Hello",
+          "start_offset" : 19,
+          "end_offset" : 27,
+          "type" : "word",
+          "position" : 2
+        },
+        {
+          "token" : "Java",
+          "start_offset" : 28,
+          "end_offset" : 34,
+          "type" : "word",
+          "position" : 3
+        },
+        {
+          "token" : "welcome",
+          "start_offset" : 35,
+          "end_offset" : 42,
+          "type" : "word",
+          "position" : 4
+        },
+        {
+          "token" : "",
+          "start_offset" : 43,
+          "end_offset" : 45,
+          "type" : "word",
+          "position" : 5
+        },
+        {
+          "token" : "to",
+          "start_offset" : 46,
+          "end_offset" : 50,
+          "type" : "word",
+          "position" : 6
+        },
+        {
+          "token" : "ProminentPixel",
+          "start_offset" : 51,
+          "end_offset" : 65,
+          "type" : "word",
+          "position" : 7
+        }
+      ]
+    }
+    ```
+    
+
+1. **Dictionary decompounder token filter:**  Uses a specified list of words and a brute force approach to find sub words in compound words. If found, these sub words are included in the token output.
+
+- Example: The following [analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html) request uses the `dictionary_decompounder` filter to find sub words in **HelloJavaWelcometoProminentPixel**. The filter then checks these sub words against the specified list of words: **Java** and **ProminentPixel.**
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [
+    {
+      "type": "dictionary_decompounder",
+      "word_list":["Java","ProminentPixel"]
+    }],
+    "text": "HelloJavaWelcometoProminentPixel"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "HelloJavaWelcometoProminentPixel",
+          "start_offset" : 0,
+          "end_offset" : 32,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "Java",
+          "start_offset" : 0,
+          "end_offset" : 32,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "ProminentPixel",
+          "start_offset" : 0,
+          "end_offset" : 32,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        }
+      ]
+    } 
+    ```
+    
+
+1. **Edge n-gram token filter:**
+- Forms an [n-gram](https://en.wikipedia.org/wiki/N-gram) of a specified length from the beginning of a token.
+- For example, you can use the `edge_ngram` token filter to change `quick` to `qu`.
+- When not customized, the filter creates 1-character edge n-grams by default.
+- Example: The following [analyze API](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-analyze.html) request uses the `edge_ngram` filter to convert **Hello Java Welcome to ProminentPixel** to 1-character and 2-character edge n-grams:
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [{
+    "type" : "edge_ngram",
+    "min_gram" : 1,
+    "max_gram" : 2
+  }],
+  "text": "Hello Java Welcome to ProminentPixel"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "H",
+          "start_offset" : 0,
+          "end_offset" : 5,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "He",
+          "start_offset" : 0,
+          "end_offset" : 5,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "J",
+          "start_offset" : 6,
+          "end_offset" : 10,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "Ja",
+          "start_offset" : 6,
+          "end_offset" : 10,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "W",
+          "start_offset" : 11,
+          "end_offset" : 18,
+          "type" : "<ALPHANUM>",
+          "position" : 2
+        },
+        {
+          "token" : "We",
+          "start_offset" : 11,
+          "end_offset" : 18,
+          "type" : "<ALPHANUM>",
+          "position" : 2
+        },
+        {
+          "token" : "t",
+          "start_offset" : 19,
+          "end_offset" : 21,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        },
+        {
+          "token" : "to",
+          "start_offset" : 19,
+          "end_offset" : 21,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        },
+        {
+          "token" : "P",
+          "start_offset" : 22,
+          "end_offset" : 36,
+          "type" : "<ALPHANUM>",
+          "position" : 4
+        },
+        {
+          "token" : "Pr",
+          "start_offset" : 22,
+          "end_offset" : 36,
+          "type" : "<ALPHANUM>",
+          "position" : 4
+        }
+      ]
+    }
+    ```
+    
+
+1. **Elision token filter:** Removes specified [elisions](https://en.wikipedia.org/wiki/Elision) from the beginning of tokens. For example, you can use this filter to change `l'avion` to `avion`.
+- When not customized, the filter removes the following French elisions by default:
+
+        `l'`, `m'`, `t'`, `qu'`, `n'`, `s'`, `j'`, `d'`, `c'`, `jusqu'`, `quoiqu'`, `lorsqu'`, `puisqu'`
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer" : "standard",
+  "filter" : ["elision"],
+  "text" : "Hello J'ava c'ome to n'max"
+}
+```
+
+- Output
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "Hello",
+          "start_offset" : 0,
+          "end_offset" : 5,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "ava",
+          "start_offset" : 6,
+          "end_offset" : 11,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "ome",
+          "start_offset" : 12,
+          "end_offset" : 17,
+          "type" : "<ALPHANUM>",
+          "position" : 2
+        },
+        {
+          "token" : "to",
+          "start_offset" : 18,
+          "end_offset" : 20,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        },
+        {
+          "token" : "max",
+          "start_offset" : 21,
+          "end_offset" : 26,
+          "type" : "<ALPHANUM>",
+          "position" : 4
+        }
+      ]
+    }
+    ```
+    
+
+1. **Fingerprint token filter:**
+- Sorts and removes duplicate tokens from a token stream, then concatenates the stream into a single output token.
+- For example, this filter changes the `[ the, fox, was, very, very, quick ]` token stream as follows:
+1. Sorts the tokens alphabetically to `[ fox, quick, the, very, very, was ]`
+2. Removes a duplicate instance of the `very` token.
+3. Concatenates the token stream to a output single token: `[fox quick the very was ]`
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": ["fingerprint"], 
+  "text": "Java Hello Welcome Welcome to World"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "Hello Java Welcome World to",
+          "start_offset" : 0,
+          "end_offset" : 35,
+          "type" : "fingerprint",
+          "position" : 0
+        }
+      ]
+    }
+    ```
+    
+    1. 
+
+1. **Flatten graph token filter:** Flattens a [token graph](https://www.elastic.co/guide/en/elasticsearch/reference/current/token-graphs.html) produced by a graph tokens filter, such as `[synonym_graph](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-synonym-graph-tokenfilter.html)` or `[word_delimiter_graph](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-word-delimiter-graph-tokenfilter.html)`.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [{
+    "type":"synonym_graph",
+    "synonyms":["jdbc,Java Database Connectivity"]
+  }],
+  "text": "Java Database Connectivity is the base of all database connectivity"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "jdbc",
+          "start_offset" : 0,
+          "end_offset" : 26,
+          "type" : "SYNONYM",
+          "position" : 0,
+          "positionLength" : 3
+        },
+        {
+          "token" : "Java",
+          "start_offset" : 0,
+          "end_offset" : 4,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "Database",
+          "start_offset" : 5,
+          "end_offset" : 13,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "Connectivity",
+          "start_offset" : 14,
+          "end_offset" : 26,
+          "type" : "<ALPHANUM>",
+          "position" : 2
+        },
+        {
+          "token" : "is",
+          "start_offset" : 27,
+          "end_offset" : 29,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        },
+        {
+          "token" : "the",
+          "start_offset" : 30,
+          "end_offset" : 33,
+          "type" : "<ALPHANUM>",
+          "position" : 4
+        },
+        {
+          "token" : "base",
+          "start_offset" : 34,
+          "end_offset" : 38,
+          "type" : "<ALPHANUM>",
+          "position" : 5
+        },
+        {
+          "token" : "of",
+          "start_offset" : 39,
+          "end_offset" : 41,
+          "type" : "<ALPHANUM>",
+          "position" : 6
+        },
+        {
+          "token" : "all",
+          "start_offset" : 42,
+          "end_offset" : 45,
+          "type" : "<ALPHANUM>",
+          "position" : 7
+        },
+        {
+          "token" : "database",
+          "start_offset" : 46,
+          "end_offset" : 54,
+          "type" : "<ALPHANUM>",
+          "position" : 8
+        },
+        {
+          "token" : "connectivity",
+          "start_offset" : 55,
+          "end_offset" : 67,
+          "type" : "<ALPHANUM>",
+          "position" : 9
+        }
+      ]
+    }
+    ```
+    
+
+1. **Unique token filter:** 
+
+Removes duplicate tokens from a stream. For example, you can use the `unique` filter to change `the lazy lazy dog` to `the lazy dog`.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer" : "whitespace",
+  "filter" : ["unique"],
+  "text" : "the quick fox jumps the lazy fox"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "the",
+          "start_offset" : 0,
+          "end_offset" : 3,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "quick",
+          "start_offset" : 4,
+          "end_offset" : 9,
+          "type" : "word",
+          "position" : 1
+        },
+        {
+          "token" : "fox",
+          "start_offset" : 10,
+          "end_offset" : 13,
+          "type" : "word",
+          "position" : 2
+        },
+        {
+          "token" : "jumps",
+          "start_offset" : 14,
+          "end_offset" : 19,
+          "type" : "word",
+          "position" : 3
+        },
+        {
+          "token" : "lazy",
+          "start_offset" : 24,
+          "end_offset" : 28,
+          "type" : "word",
+          "position" : 4
+        }
+      ]
+    }
+    ```
+    
+    1. **Keep types token filter:**
+    
+    Keeps or removes tokens of a specific type. For example, you can use this filter to change `3 quick foxes` to `quick foxes` by keeping only `<ALPHANUM>` (alphanumeric) tokens.
+    
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard"
+  , "filter": [{
+    "type": "keep_types",
+    "types":"<NUM>"
+  }]
+  , "text": "1 java 2 Hello 3 world 4 print 5 it"
+}
+
+GET _analyze
+{
+  "tokenizer": "standard"
+  , "filter": [{
+    "type": "keep_types",
+    "types":["<NUM>"],
+    "mode":"exclude"
+  }]
+  , "text": "1 java 2 Hello 3 world 4 print 5 it"
+}
+```
+
+- Output:
+    
+    ```json
+    **# Output-1** 
+    {
+      "tokens" : [
+        {
+          "token" : "1",
+          "start_offset" : 0,
+          "end_offset" : 1,
+          "type" : "<NUM>",
+          "position" : 0
+        },
+        {
+          "token" : "2",
+          "start_offset" : 7,
+          "end_offset" : 8,
+          "type" : "<NUM>",
+          "position" : 2
+        },
+        {
+          "token" : "3",
+          "start_offset" : 15,
+          "end_offset" : 16,
+          "type" : "<NUM>",
+          "position" : 4
+        },
+        {
+          "token" : "4",
+          "start_offset" : 23,
+          "end_offset" : 24,
+          "type" : "<NUM>",
+          "position" : 6
+        },
+        {
+          "token" : "5",
+          "start_offset" : 31,
+          "end_offset" : 32,
+          "type" : "<NUM>",
+          "position" : 8
+        }
+      ]
+    }
+    
+    **# Output-2**
+    
+    {
+      "tokens" : [
+        {
+          "token" : "java",
+          "start_offset" : 2,
+          "end_offset" : 6,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "Hello",
+          "start_offset" : 9,
+          "end_offset" : 14,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        },
+        {
+          "token" : "world",
+          "start_offset" : 17,
+          "end_offset" : 22,
+          "type" : "<ALPHANUM>",
+          "position" : 5
+        },
+        {
+          "token" : "print",
+          "start_offset" : 25,
+          "end_offset" : 30,
+          "type" : "<ALPHANUM>",
+          "position" : 7
+        },
+        {
+          "token" : "it",
+          "start_offset" : 33,
+          "end_offset" : 35,
+          "type" : "<ALPHANUM>",
+          "position" : 9
+        }
+      ]
+    }
+    ```
+    
+
+1. **Keep words token filter:** Keeps only tokens contained in a specified word list.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [{
+    "type":"keep",
+    "keep_words":["Java", "World"]
+  }],
+  "text": "Welcome to Java World"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "Java",
+          "start_offset" : 11,
+          "end_offset" : 15,
+          "type" : "<ALPHANUM>",
+          "position" : 2
+        },
+        {
+          "token" : "World",
+          "start_offset" : 16,
+          "end_offset" : 21,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        }
+      ]
+    }
+    ```
+    
+
+1. **Keyword marker token filter:** Marks specified tokens as keywords, which are not stemmed.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": ["stemmer"]
+  , "text":"Peoples are running in the marathon"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "Peopl",
+          "start_offset" : 0,
+          "end_offset" : 7,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "ar",
+          "start_offset" : 8,
+          "end_offset" : 11,
+          "type" : "word",
+          "position" : 1
+        },
+        {
+          "token" : "run",
+          "start_offset" : 12,
+          "end_offset" : 19,
+          "type" : "word",
+          "position" : 2
+        },
+        {
+          "token" : "in",
+          "start_offset" : 20,
+          "end_offset" : 22,
+          "type" : "word",
+          "position" : 3
+        },
+        {
+          "token" : "the",
+          "start_offset" : 23,
+          "end_offset" : 26,
+          "type" : "word",
+          "position" : 4
+        },
+        {
+          "token" : "marathon",
+          "start_offset" : 27,
+          "end_offset" : 35,
+          "type" : "word",
+          "position" : 5
+        }
+      ]
+    }
+    ```
+    
+
+1. **Keyword repeat token filter:** Outputs a keyword version of each token in a stream. These keyword tokens are not stemmed.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": ["keyword_repeat"],
+  "text": "Hello Java"
+
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "Hello",
+          "start_offset" : 0,
+          "end_offset" : 5,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "Hello",
+          "start_offset" : 0,
+          "end_offset" : 5,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "Java",
+          "start_offset" : 6,
+          "end_offset" : 10,
+          "type" : "word",
+          "position" : 1
+        },
+        {
+          "token" : "Java",
+          "start_offset" : 6,
+          "end_offset" : 10,
+          "type" : "word",
+          "position" : 1
+        }
+      ]
+    }
+    ```
+    
+
+1. **KStem token filter:** Provides [KStem](https://ciir.cs.umass.edu/pubfiles/ir-35.pdf)-based stemming for the English language. The `kstem` filter combines [algorithmic stemming](https://www.elastic.co/guide/en/elasticsearch/reference/current/stemming.html#algorithmic-stemmers) with a built-in [dictionary](https://www.elastic.co/guide/en/elasticsearch/reference/current/stemming.html#dictionary-stemmers).
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "whitespace"
+  , "filter": ["kstem"],
+  "text": "the foxes jumping quickly"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "the",
+          "start_offset" : 0,
+          "end_offset" : 3,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "fox",
+          "start_offset" : 4,
+          "end_offset" : 9,
+          "type" : "word",
+          "position" : 1
+        },
+        {
+          "token" : "jump",
+          "start_offset" : 10,
+          "end_offset" : 17,
+          "type" : "word",
+          "position" : 2
+        },
+        {
+          "token" : "quick",
+          "start_offset" : 18,
+          "end_offset" : 25,
+          "type" : "word",
+          "position" : 3
+        }
+      ]
+    }
+    ```
+    
+
+1. **Length token filter:** Removes tokens shorter or longer than specified character lengths. For example, you can use the `length` filter to exclude tokens shorter than 2 characters and tokens longer than 5 characters.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": [{
+    "type":"length",
+    "min":0,
+    "max":4
+  }],
+  "text": "Yati make nodejs example to explain Yash"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "Yati",
+          "start_offset" : 0,
+          "end_offset" : 4,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "make",
+          "start_offset" : 5,
+          "end_offset" : 9,
+          "type" : "word",
+          "position" : 1
+        },
+        {
+          "token" : "to",
+          "start_offset" : 25,
+          "end_offset" : 27,
+          "type" : "word",
+          "position" : 4
+        },
+        {
+          "token" : "Yash",
+          "start_offset" : 36,
+          "end_offset" : 40,
+          "type" : "word",
+          "position" : 6
+        }
+      ]
+    }
+    ```
+    
+
+1. **Trim token filter:** Removes leading and trailing whitespace from each token in a stream. While this can change the length of a token, the `trim` filter does *not* change a token’s offsets.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "keyword",
+  "text": "   Hello Java    "
+}
+
+GET _analyze
+{
+  "tokenizer": "keyword"
+  , "filter": ["trim"],
+  "text":"   Hello Java    "
+}
+```
+
+- Output:
+    
+    ```json
+    # GET _analyze
+    {
+      "tokens" : [
+        {
+          "token" : "   Hello Java    ",
+          "start_offset" : 0,
+          "end_offset" : 17,
+          "type" : "word",
+          "position" : 0
+        }
+      ]
+    }
+    
+    # GET _analyze
+    {
+      "tokens" : [
+        {
+          "token" : "Hello Java",
+          "start_offset" : 0,
+          "end_offset" : 17,
+          "type" : "word",
+          "position" : 0
+        }
+      ]
+    }
+    ```
+    
+
+1. **Uppercase token filter:** Changes token text to uppercase. For example, you can use the `uppercase` filter to change `the Lazy DoG` to `THE LAZY DOG`.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "whitespace"
+  , "filter": ["uppercase"],
+  "text": "hello world WelCome to JAva"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "HELLO",
+          "start_offset" : 0,
+          "end_offset" : 5,
+          "type" : "word",
+          "position" : 0
+        },
+        {
+          "token" : "WORLD",
+          "start_offset" : 6,
+          "end_offset" : 11,
+          "type" : "word",
+          "position" : 1
+        },
+        {
+          "token" : "WELCOME",
+          "start_offset" : 12,
+          "end_offset" : 19,
+          "type" : "word",
+          "position" : 2
+        },
+        {
+          "token" : "TO",
+          "start_offset" : 20,
+          "end_offset" : 22,
+          "type" : "word",
+          "position" : 3
+        },
+        {
+          "token" : "JAVA",
+          "start_offset" : 23,
+          "end_offset" : 27,
+          "type" : "word",
+          "position" : 4
+        }
+      ]
+    }
+    ```
+    
+
+1. **Synonym token filter:**
+
+The `synonym` token filter allows to easily handle synonyms during the analysis process. Synonyms are configured using a configuration file.
+
+- Example:
+
+```json
+PUT school_products
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_synonyms":{
+          "tokenizer":"standard",
+          "filter":["lowercase","synonyms"]
+        }
+      }
+      , "filter": {
+        "synonyms":{
+            "type":"synonym",
+          "synonyms_path": "synonyms\\phone_synonyms.txt"
+          }
+      }
+    }
+  }
+}
+
+GET school_products/_analyze
+{
+  "analyzer": "my_synonyms",
+  "text": "Iphone"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "iphone",
+          "start_offset" : 0,
+          "end_offset" : 6,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "i",
+          "start_offset" : 0,
+          "end_offset" : 6,
+          "type" : "SYNONYM",
+          "position" : 0
+        },
+        {
+          "token" : "ione",
+          "start_offset" : 0,
+          "end_offset" : 6,
+          "type" : "SYNONYM",
+          "position" : 0
+        },
+        {
+          "token" : "ipone",
+          "start_offset" : 0,
+          "end_offset" : 6,
+          "type" : "SYNONYM",
+          "position" : 0
+        },
+        {
+          "token" : "ifon",
+          "start_offset" : 0,
+          "end_offset" : 6,
+          "type" : "SYNONYM",
+          "position" : 0
+        },
+        {
+          "token" : "phone",
+          "start_offset" : 0,
+          "end_offset" : 6,
+          "type" : "SYNONYM",
+          "position" : 1
+        }
+      ]
+    }
+    ```
+    
+- Other Filter are available on the [link](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis-tokenfilters.html)
+
+### Character filters reference:
+
+1. **HTML strip character filter:** Strips HTML elements from a text and replaces HTML entities with their decoded value (e.g., replaces `&amp;` with `&`).
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard",
+  "char_filter": ["html_strip"],
+  "text": "<h1><a>Welocme to java with elasticsearch API</a></h1>"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "Welocme",
+          "start_offset" : 7,
+          "end_offset" : 14,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "to",
+          "start_offset" : 15,
+          "end_offset" : 17,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "java",
+          "start_offset" : 18,
+          "end_offset" : 22,
+          "type" : "<ALPHANUM>",
+          "position" : 2
+        },
+        {
+          "token" : "with",
+          "start_offset" : 23,
+          "end_offset" : 27,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        },
+        {
+          "token" : "elasticsearch",
+          "start_offset" : 28,
+          "end_offset" : 41,
+          "type" : "<ALPHANUM>",
+          "position" : 4
+        },
+        {
+          "token" : "API",
+          "start_offset" : 42,
+          "end_offset" : 49,
+          "type" : "<ALPHANUM>",
+          "position" : 5
+        }
+      ]
+    }
+    ```
+    
+
+1. **Mapping character filter:** The `mapping` character filter accepts a map of keys and values. Whenever it encounters a string of characters that is the same as a key, it replaces them with the value associated with that key.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "standard",
+  "char_filter": [{
+    "type" : "mapping",
+    "mappings":[
+      
+      "0 => 0",
+      "૧ => 1",
+      "૨ => 2",
+      "૩ => 3",
+      "૪ => 4",
+      "૫ => 5",
+      "૬ => 6",
+      "૭ => 7",
+      "૮ => 8",
+      "૯ => 9"
+      
+      ]
+  }],
+  "text": "My mobile number is ૯0૩૩૭૫૭૧0૧"
+}
+```
+
+- Output:
+    
+    ```json
+    {
+      "tokens" : [
+        {
+          "token" : "My",
+          "start_offset" : 0,
+          "end_offset" : 2,
+          "type" : "<ALPHANUM>",
+          "position" : 0
+        },
+        {
+          "token" : "mobile",
+          "start_offset" : 3,
+          "end_offset" : 9,
+          "type" : "<ALPHANUM>",
+          "position" : 1
+        },
+        {
+          "token" : "number",
+          "start_offset" : 10,
+          "end_offset" : 16,
+          "type" : "<ALPHANUM>",
+          "position" : 2
+        },
+        {
+          "token" : "is",
+          "start_offset" : 17,
+          "end_offset" : 19,
+          "type" : "<ALPHANUM>",
+          "position" : 3
+        },
+        {
+          "token" : "9033757101",
+          "start_offset" : 20,
+          "end_offset" : 30,
+          "type" : "<NUM>",
+          "position" : 4
+        }
+      ]
+    }
+    ```
+    
+
+1. **Pattern replace character filter:** The `pattern_replace` character filter uses a regular expression to match characters which should be replaced with the specified replacement string. The replacement string can refer to capture groups in the regular expression.
+
+- Example:
+
+```json
+GET _analyze
+{
+  "tokenizer": "keyword",
+  "char_filter": [{
+    "type":"pattern_replace",
+    "pattern": "(\\d+)-(?=\\d)",
+    "replacement" : "$1^"
+  }],
+  "text": "Ceadit card number is 123-456-789-101"
+}
+```
+
+- Output:
+{
+  "tokens" : [
+    {
+      "token" : "Ceadit card number is 123^456^789^101",
+      "start_offset" : 0,
+      "end_offset" : 37,
+      "type" : "word",
+      "position" : 0
+    }
+  ]
+}
