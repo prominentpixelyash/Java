@@ -1,0 +1,93 @@
+# Table Data
+=============
+
+   Integer sNo
+   String nameOfTheShow
+   Double imdbRating
+   Integer ageOfViewers
+   String language
+   String genre
+   Integer noOfSeasonsAvailable
+   String yearOfRelease
+   String madeInCountry
+
+
+
+   CREATE TABLE tvshows(
+      sNo int primary key,
+      nameOfTheShow varchar(500),
+      imdbRating numeric,
+      ageOfViewers smallint,
+      language varchar(50),
+      genre varchar(50),
+      noOfSeasonsAvailable smallint,
+      yearOfRelease varchar(4),
+      madeInCountry varchar(50)
+    );
+
+
+
+# Index
+=======
+
+PUT tvshows
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer":"my_tokeniz",
+          "filter": [
+            "stop",
+            "unique",
+            "trim",
+            "my_filter"
+          ]
+        }
+      },
+      "tokenizer": {
+        "my_tokeniz": {
+          "type": "whitespace"
+        }
+      },
+      "char_filter": {},
+      "filter": {
+        "my_filter": {
+          "type": "synonym",
+          "synonyms_path": "synonyms\\tvshows.txt"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "sNo": {
+        "type": "integer"
+      },
+      "nameOfTheShow": {
+        "type": "text"
+      },
+      "imdbRating": {
+        "type": "double"
+      },
+      "ageOfViewers": {
+        "type": "integer"
+      },
+      "language": {
+        "type": "text"
+      },
+      "genre": {
+        "type": "text"
+      },
+      "noOfSeasonsAvailable": {
+        "type": "integer"
+      },
+      "yearOfRelease": {
+        "type": "text"
+      },
+      "madeInCountry": {
+        "type": "text"
+      }
+    }
+  }
+}
