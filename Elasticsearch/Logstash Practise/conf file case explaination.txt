@@ -1,0 +1,19 @@
+1. jdbc_case_1.conf
+===================
+
+=> In this case evertime data append into elasticsearch (Evertime same docs with indexing on update time of Logstash).
+
+
+
+2. jdbc_case_2.conf
+===================
+
+=> Same document is not indexing again and again due to in conf file we add document id as our primary key but still again an again docs is updating in elasticsearch.
+
+
+
+3. jdbc_case_3.conf
+===================
+
+=> We used sql_last_value parameter and traking coloumn in input it will only update the latest indexed docs only.
+
