@@ -1,0 +1,49 @@
+# Table Data
+=============
+
+
+    CREATE TABLE tvshows(
+      sNo int primary key,
+      nameOfTheShow varchar(500),
+      imdbRating numeric,
+      ageOfViewers smallint,
+      language varchar(50),
+      genre varchar(50),
+      noOfSeasonsAvailable smallint,
+      yearOfRelease varchar(4),
+      madeInCountry varchar(50),
+      updateTime timestamptz NOT NULL DEFAULT NOW()
+    );
+	
+	
+	
+	 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+     RETURNS TRIGGER AS $$
+     BEGIN
+        NEW.updateTime = NOW();
+        RETURN NEW;
+     END;
+     $$ LANGUAGE plpgsql;
+	 
+	 
+	 
+	 
+	 CREATE TRIGGER set_timestamp
+     BEFORE UPDATE ON tvshows
+     FOR EACH ROW
+     EXECUTE PROCEDURE trigger_set_timestamp();
+	 
+	 
+	 
+	 SELECT * FROM tvshows;
+	 
+	 update tvshows set updatetime=now() where sno=1;
+	 
+	 insert into tvshows values(6,'Comic Book: The Movie',8,13,'Hiri Motu','Comedy',2,1965,'Japan');
+	 
+	 update tvshows set updatetime='2021-01-01 17:39:49.554808-05' where sno=11;
+	 
+	 select extract(epoch from updatetime) from tvshows group by updatetime;
+	 
+	 delete from tvshows where sno=11;
+	

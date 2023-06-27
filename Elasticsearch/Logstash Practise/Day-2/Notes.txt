@@ -1,0 +1,23 @@
+4.jdbc_case_4
+==============
+
+=> In this case we are saving the only inserted latest data and If the value in "last_sql_value" is the bigger date and we are trying to insert a smaller date than "last_sql_value" then it will not going to store the docs in Elasticsearch.
+
+
+Syntax:
+======= 
+input {
+  jdbc {
+      ...
+      clean_run => true
+      ...
+    }
+}
+
+
+
+=> Above syntax is used to rest the value of "last_sql_value" to its initial value.
+
+
+
+
