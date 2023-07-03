@@ -1,0 +1,1598 @@
+GET _cluster/health
+GET _cat/nodes?v
+GET _cat/shards?v
+GET _cat/indices?v
+
+
+
+# to create default parameter index
+PUT students
+
+
+
+
+# to delete index
+DELETE students
+
+
+
+
+
+# to create own parameter indedx
+PUT students
+{
+  "settings": {
+    "number_of_shards": 2,
+    "number_of_replicas": 2
+  }
+}
+
+
+
+
+# to post the doc in index 
+POST students/_doc
+{
+  "name":"Yati",
+  "address":"Surat"
+}
+
+# to post the doc with our _id
+POST students/_doc/123456789
+{
+  "name":"Nitin",
+  "address":"Mumbai"
+}
+
+
+
+
+# to get doc 
+GET students/_doc/wsoDv4gBC8Nnvp7MHe6a
+
+
+
+
+
+# to get all docs
+GET students/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+
+
+
+# to replace the doc
+PUT students/_doc/123456789
+{
+  "address":"Pune",
+  "post":"spring boot developer"
+}
+
+
+
+
+# to delete doc
+DELETE students/_doc/123456789
+
+
+
+
+# to update the student 
+POST students/_update/123456789
+{
+  "doc": {
+
+    "address":"Pune",
+    "curr_add":"Surat"
+    
+  }
+}
+
+
+
+# update the doc with doc
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  
+  "doc": {
+    
+    "age":23
+    
+  }
+  
+}
+
+
+# to replace the doc with post
+POST students/_doc/123456789
+{
+  "name":"Nitin",
+  "address":"Mumbai"
+}
+
+
+
+
+
+# script in docs
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  
+  "script": {
+    
+    "source": "ctx._source.age=24"
+    
+  }
+  
+}
+
+
+
+
+
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  "script": {
+    
+    "source": "ctx._source.age=params.new_age",
+    "params": {
+      "new_age":5
+    }
+    
+  }
+}
+
+
+
+
+
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  "script": {
+    "source": """
+    
+    if(ctx._source.age<=0){
+      ctx.op='noop'
+    }
+    else{
+     ctx._source.age--; 
+    }"""
+  }
+}
+
+
+
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  "script": {
+    "source": """
+    
+    if(ctx._source.age<=0){
+      ctx.op='delete'
+    }
+    else{
+     ctx._source.age--; 
+    }"""
+  }
+}
+
+
+
+
+POST students/_update/xcoPv4gBC8Nnvp7Mnu57
+{
+  "script": {
+    "source": """
+    
+    if(ctx._source.age<=0){
+      ctx.op='delete'
+    }
+    else{
+     ctx._source.age--; 
+    }"""
+  },
+  
+  "upsert": {
+    
+      "name":"Yati",
+      "address":"Surat"
+    
+  }
+  
+}
+
+
+
+
+
+
+
+DELETE tvshows
+
+
+GET tvshows/_search
+{
+  "query": {
+    
+    "match_all": {}
+    
+  }
+}
+
+
+GET tvshows/_search
+{
+  "size": 100, 
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+#direct search with match query
+GET tvshows/_search
+{
+  "size": 25, 
+  "query": {
+    "match": {
+      "Name of the show": "man"
+    }
+  }
+}
+
+
+# match with and operator 
+GET tvshows/_search
+{
+  "query": {
+    "match": {
+      "Name of the show": {
+        "query":"the terror",
+        "operator":"and"
+      }
+    }
+  }
+}
+
+
+GET tvshows/_search
+{
+  "query": {
+    "match": {
+      "Name of the show": {
+        "query":"the man",
+        "operator":"and"
+      }
+    }
+  }
+}
+
+
+
+
+
+#search with field parameter match query
+GET tvshows/_search
+{
+  "query": {
+    "match": {
+      "Name of the show": {
+        "query":"th terr",
+        "operator":"and",
+        "fuzziness":2
+      }
+    }
+  }
+}
+
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "match": {
+      "Name of the show": "The"
+    }
+  }
+}
+
+
+
+# multi_match query 
+GET tvshows/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "Action",
+      "fields": ["Name of the show","Genre"],
+      "operator": "OR",
+      "type": "cross_fields"
+    }
+  }
+}
+
+
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "query_string": {
+      "default_field": "Name of the show",
+      "query": "the man",
+      "default_operator": "AND"
+    }
+  }
+}
+
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "range": {
+      "IMDb rating": {
+        "gte": 8.5,
+        "lte": 10
+      }
+    }
+  }
+}
+
+
+GET tvshows/_search
+{
+  "query": {
+    "match_phrase": {
+      "Name of the show": "family Man"
+    }
+  }
+}
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {"match": {
+          "Name of the show": "The"
+        }},
+        {
+          "match": {
+            "Language": "Hindi"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "Name of the show": "Man"
+          }
+          
+        },
+        {
+          "match": {
+            "Name of the show": "Terror"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "match": {
+            "Name of the show": "THE"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+
+GET tvshows/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "Name of the show": "Man"
+          }
+        },
+        {"match": {
+          "Language": "English"
+        }
+        }
+      ],
+      "should": [
+        {
+          "match": {
+            "IMDb rating": "4.5"
+          }
+        }
+      ],
+      "must_not": [
+        {"match": {
+          "Name of the show": "Adventures"
+        }}
+      ]
+      
+    }
+  }
+}
+
+
+
+GET tvshow/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+#avg aggregation 
+POST tvshows/_search
+{
+  "aggs": {
+    "AvgRating": {
+      "avg": {
+        "field": "IMDb rating"
+      }
+    }
+  }
+}
+
+
+POST tvshows/_search
+{
+  "aggs": {
+    "minSeasons": {
+      "min": {
+        "field": "No of seasons available"
+      }
+    }
+  }
+}
+
+
+
+
+POST tvshows/_search
+{
+  "aggs": {
+    "maxSeasons": {
+      "max": {
+        "field": "No of seasons available"
+      }
+    }
+  }
+}
+
+
+
+POST tvshows/_search
+{
+  "aggs": {
+    "sumOfSerialNumer": {
+      "sum": {
+        "field": "S_no_"
+      }
+    }
+  }
+}
+
+
+POST tvshows/_search
+{
+  "aggs": {
+    "totalStats": {
+      "stats": {
+        "field": "No of seasons available"
+      }
+    }
+  }
+}
+
+
+
+POST tvshow/_search
+{
+  "aggs": {
+    "distinctRatingCount": {
+      "cardinality": {
+        "field": "S_no_"
+      }
+    }
+  }
+}
+
+
+
+POST tvshow/_search
+{
+  "size": 0, 
+  "aggs": {
+    "distinctSeasonsCount": {
+      "cardinality": {
+        "field": "No of seasons available"
+      }
+    }
+  }
+}
+
+
+
+
+GET person/_search
+{
+  "size": 20, 
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+
+POST person/_doc
+{
+          "zipcode": 395005,
+          "country": "India",
+          "streetname": "tathi nagar",
+          "city": "surat",
+          "state": "gujarat",
+          "personname": "Satis"
+}
+
+
+POST person/_search
+{
+  "size": 0, 
+  "aggs": {
+    "countryCount": {
+      "terms": {
+        "field": "country"
+      }
+    }
+  }
+}
+
+
+
+POST person/_search
+{
+  "size": 0, 
+  "aggs": {
+    "countrywithsatte": {
+      "terms": {
+        "field": "country"
+      },
+      "aggs": {
+        "stateCount": {
+          "terms": {
+            "field": "state"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+GET tvshows/_search
+{
+  "size": 100, 
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+
+
+GET tvshow/_search
+{
+  "query": {
+    "match": {
+      "Name of the show": "Man"
+    }
+  },
+  "highlight": {
+    "number_of_fragments": 1, 
+    "fields": {
+      "Name of the show": {}
+    }
+  }
+}
+
+
+
+
+
+PUT products
+
+DELETE products
+
+
+GET products/_search
+{
+  "size": 20, 
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+
+GET products/_search
+{
+  "query": {
+    "match": {
+      "productName":{
+        "query": "phone",
+        "fuzziness": 2
+      }
+      
+    }
+  }
+}
+
+
+
+GET products/_search
+{
+  "query": {
+    "match_phrase": {
+      "productName":"Mobile phones"
+    }
+  }
+}
+
+
+
+GET products/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "America",
+      "fields": ["madeCity","madeState","madeInCountry"]
+    }
+  }
+}
+
+
+
+GET products/_search
+{
+  "query": {
+    "range": {
+      "numberOfProducts": {
+        "gte": 10000,
+        "lte": 50000
+      }
+    }
+  }
+}
+
+
+
+
+GET products/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "productCategory": "Textile"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+
+GET products/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "madeInCountry": "America"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+GET products/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "productCategory": "Textile"
+          }
+        }
+      ],
+      "should": [
+        {
+          "match_phrase": {
+            "madeCity": "Surat"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+GET products/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {"match": {
+          "madeInCountry": "America"
+        }}
+      ]
+    }
+  }
+}
+
+
+
+GET products/_search
+{
+  
+  "query": {
+    
+    "bool": {
+      
+      
+      "must": [
+        {
+          "match": {
+            "madeInCountry": "India"
+          }
+        }
+      ]
+      , "should": [
+        {
+          "match": {
+            "productCategory": "Textile"
+          }
+        }
+      ]
+      , "must_not": [
+        {
+          "match": {
+            "productPrice": "1000"
+          }
+        }
+      ]
+      
+      
+      
+    }
+    
+    
+  }
+  
+}
+
+
+
+GET products/_search
+{
+  "size": 20, 
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+
+POST products/_search
+{
+  "size": 0,
+  "aggs": {
+    "countryCount": {
+      "terms": {
+        "field": "madeInCountry"
+      }
+    }
+  }
+}
+
+
+
+GET products/_search
+{
+  "query": {
+    "match": {
+      "productCategory": "Textile"
+    }
+  }
+  , "highlight": {
+    "post_tags": "</em>"
+    , "pre_tags": "<em>",
+    "fields": {
+      "productCategory": {}
+    }
+  }
+}
+
+
+
+
+GET products/_search
+{
+  "size": 0, 
+  "query": {
+    "match_all": {}
+  }
+  , "aggs": {
+    "totalWorth": {
+      "sum": {
+        "field": "productPrice"
+      }
+    }
+  }
+}
+
+
+
+GET products/_search
+{
+  "size": 0, 
+  "query": {
+    "match_all": {}
+  }
+  , "aggs": {
+    "avgPrice": {
+      "avg": {
+        "field": "productPrice"
+      }
+    }
+  }
+}
+
+
+
+GET products/_search
+{
+  "size": 0, 
+  "query": {
+    
+  "match_all": {}
+  }
+  , "aggs": {
+    "distinctProductCount": {
+      "cardinality": {
+        "field": "productCategory"
+      }
+    }
+  }
+}
+
+
+
+
+
+
+POST _analyze
+{
+  "analyzer": "whitespace",
+  "text": "The quick brown fox."
+}
+
+
+
+POST _analyze
+{
+  "tokenizer": "standard"
+  , "filter": ["lowercase"]
+  , "text": "Hello WORLD"
+}
+
+
+
+PUT customers
+
+DELETE customers
+
+
+PUT customers
+{
+  "mappings": {
+    "properties": {
+      "dob":{
+        "type": "date"
+      },
+      "intro":{
+        "type": "text"
+      },
+      "name":{
+        "type": "text"
+      },
+      "age":{
+        "type": "integer"
+      },
+      "marriageStatus":{
+        "type": "boolean"
+      }
+    }
+  }
+}
+
+
+GET customers
+
+
+POST customers/_doc
+{
+  "name":"Yash",
+  "dob":"1993-08-26",
+  "age":29,
+  "marriageStatus":false,
+  "intro":"Hello I am yash rajput from surat gujarat. I have completed my graduation in Electrical Engineering in 2016 and I have 4+ year of experiance in electrical after quit my job to learn programming language and I learn Html,Css,JavaScript, core java, Advance java, JDBC, Hibernate, Spring, SpringBoot and MySql database"
+}
+
+
+DELETE customers/_doc/Kfy34ogBFHIM-CONfwpE
+
+
+
+DELETE customers
+
+
+PUT employee
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my-tokenizer":{
+          "tokenizer":"standard",
+          "filter":[]
+        }
+      }
+      , "tokenizer": {}
+      , "char_filter": {}
+      , "filter": {}
+    }
+  }
+}
+
+
+DELETE employee
+
+
+POST employee/_analyze
+{
+  "text": "Hello @Yash to ProminentP!xel"
+}
+
+POST _analyze
+{
+  "tokenizer": "standard",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+
+
+POST _analyze
+{
+  "tokenizer": "letter",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+
+
+POST _analyze
+{
+  "tokenizer": "lowercase",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+
+
+
+POST _analyze
+{
+  "tokenizer": "whitespace",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+
+
+
+POST _analyze
+{
+  "tokenizer": "uax_url_email",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+
+
+POST _analyze
+{
+  "tokenizer": "classic",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+
+
+POST _analyze
+{
+  "tokenizer": "keyword",
+  "text": "Hello @Yash to ProminentP!xel prominentpixel@gmail.com"
+}
+
+
+POST _analyze
+{
+  "tokenizer":{
+    "type": "pattern",
+    "pattern":","
+  },
+  "text": "Hell,o @Ya,sh to Pro,minen,tP!xel prom,inentpixel@gmail.com"
+}
+
+
+POST _analyze
+{
+  "tokenizer": {
+    "type":"char_group",
+    "tokenize_on_chars":[
+      "whitespace",
+      "_"
+      ]
+  },
+  "text": "H_ello @Yash to Pro_minent_P!xel prominent_pixel_@gmail.com"
+}
+
+
+
+POST _analyze
+{
+  "tokenizer": {
+    "type": "simple_pattern_split",
+    "pattern": "_"
+  },
+  "text": "Hello @Ya_sh to Prominent_P!xel prominent_pixel_@gmail.com"
+}
+
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": ["apostrophe"],
+  "text": "You'r did'not know"
+}
+
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": ["asciifolding"],
+  "text": "açaí à la carte"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "classic",
+  "filter": ["classic"],
+  "text": "The 2 Q.U.I.C.K. Brown-Foxes jumped over the lazy dog's bone."
+}
+
+
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": [{
+    "type" : "common_grams",
+    "common_words":["the","is"]
+  }],
+  "text" : "the quick fox is brown"
+}
+
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter":[{
+    "type":"condition",
+    "filter": "lowercase",
+    "script":{
+      "source": "token.getTerm().length() < 5"
+    }
+  }],
+  "text": "THE QUICK BROWN FOX"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": ["decimal_digit"],
+  "text": "१-one two-२ ३"
+}
+
+
+GET _analyze 
+{
+  "tokenizer": "whitespace"
+  , "filter": ["delimited_payload"]
+  , "text": "Special Message|20 Hello|21 Java|1 welcome |6 to|5 ProminentPixel"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [
+    {
+      "type": "dictionary_decompounder",
+      "word_list":["Java","ProminentPixel"]
+    }],
+    "text": "HelloJavaWelcometoProminentPixel"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [{
+    "type" : "edge_ngram",
+    "min_gram" : 1,
+    "max_gram" : 2
+  }],
+  "text": "Hello Java Welcome to ProminentPixel"
+}
+
+
+
+GET _analyze
+{
+  "tokenizer" : "standard",
+  "filter" : ["elision"],
+  "text" : "Hello J'ava c'ome to n'max"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": ["fingerprint"], 
+  "text": "Java Hello Welcome Welcome to World"
+}
+
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [{
+    "type":"synonym_graph",
+    "synonyms":["jdbc,Java Database Connectivity"]
+  }],
+  "text": "Java Database Connectivity is the base of all database connectivity"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [{
+    "type":"hunspell",
+    "locale":"en_US"
+  }],
+  "text": "the peoples are running in the merathon"
+}
+
+
+
+GET _analyze
+{
+  "tokenizer": "standard"
+  , "filter": [{
+    "type": "keep_types",
+    "types":"<NUM>"
+  }]
+  , "text": "1 java 2 Hello 3 world 4 print 5 it"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "standard"
+  , "filter": [{
+    "type": "keep_types",
+    "types":["<NUM>"],
+    "mode":"exclude"
+  }]
+  , "text": "1 java 2 Hello 3 world 4 print 5 it"
+}
+
+
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "filter": [{
+    "type":"keep",
+    "keep_words":["Java", "World"]
+  }],
+  "text": "Welcome to Java World"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": ["stemmer"]
+  , "text":"Peoples are running in the marathon"
+}
+
+
+
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": ["keyword_repeat"],
+  "text": "Hello Java"
+}
+
+
+
+
+
+GET _analyze
+{
+  "tokenizer": "whitespace"
+  , "filter": ["kstem"],
+  "text": "the foxes jumping quickly"
+}
+
+
+
+GET _analyze
+{
+  "tokenizer": "whitespace",
+  "filter": [{
+    "type":"length",
+    "min":0,
+    "max":4
+  }],
+  "text": "Yati make nodejs example to explain Yash"
+}
+
+
+GET _analyze
+{
+  "tokenizer" : "whitespace",
+  "filter" : ["unique"],
+  "text" : "the quick fox jumps the lazy fox"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "keyword",
+  "text": "   Hello Java    "
+}
+
+
+GET _analyze
+{
+  "tokenizer": "keyword"
+  , "filter": ["trim"],
+  "text":"   Hello Java    "
+}
+
+
+GET _analyze
+{
+  "tokenizer": "whitespace"
+  , "filter": ["uppercase"],
+  "text": "hello world WelCome to JAva"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "char_filter": ["html_strip"],
+  "text": "<h1><a>Welocme to java with elasticsearch API</a></h1>"
+}
+
+
+GET _analyze
+{
+  "tokenizer": "standard",
+  "char_filter": [{
+    "type" : "mapping",
+    "mappings":[
+      
+      "0 => 0",
+      "૧ => 1",
+      "૨ => 2",
+      "૩ => 3",
+      "૪ => 4",
+      "૫ => 5",
+      "૬ => 6",
+      "૭ => 7",
+      "૮ => 8",
+      "૯ => 9"
+      
+      ]
+  }],
+  "text": "My mobile number is ૯0૩૩૭૫૭૧0૧"
+}
+
+
+
+GET _analyze
+{
+  "tokenizer": "keyword",
+  "char_filter": [{
+    "type":"pattern_replace",
+    "pattern": "(\\d+)-(?=\\d)",
+    "replacement" : "$1^"
+  }],
+  "text": "Ceadit card number is 123-456-789-101"
+}
+
+
+DELETE school_products
+
+
+PUT school_products
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_synonyms":{
+          "tokenizer":"my_tokenizer",
+          "filter":["lowercase","synonyms"]
+        }
+      },
+      "tokenizer": {
+        "my_tokenizer": {
+          "type":"whitespace"
+        }
+      }
+      , "filter": {
+        "synonyms":{
+            "type":"synonym",
+          "synonyms_path": "synonyms\\phone_synonyms.txt"
+          }
+      }
+    }
+  }
+}
+
+
+
+
+GET school_products/_analyze
+{
+  "analyzer": "my_synonyms",
+  "text": "Iphone"
+}
+
+
+GET tvshow/_search
+{
+  "size": 0,
+  "aggs": {
+    "countRatingWithRange": {
+      "terms": {
+        "field": "IMDb rating"
+      }
+    }
+  }
+}
+
+
+GET tvshow/_search
+{
+  "size": 0,
+  "aggs": {
+    "countRatingWithRange": {
+      "range": {
+        "field": "IMDb rating",
+        "ranges": [
+          {
+            "from": 8.8,
+            "to": 9.1
+          }
+        ]
+      }
+    }
+  }
+}
+
+
+GET tvshow/_search
+{
+  "size": 55, 
+  "query": {
+    "range": {
+      "IMDb rating": {
+        "gte": 8.8,
+        "lte": 9.0
+      }
+    }
+  }
+}
+
+
+
+GET tvshow/_search
+{
+  "size": 20, 
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+PUT tvshows
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer":"my_tokeniz",
+          "filter": [
+            "stop",
+            "unique",
+            "trim",
+            "my_filter"
+          ]
+        }
+      },
+      "tokenizer": {
+        "my_tokeniz": {
+          "type": "whitespace"
+        }
+      },
+      "char_filter": {},
+      "filter": {
+        "my_filter": {
+          "type": "synonym",
+          "synonyms_path": "synonyms\\tvshows.txt"
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "sNo": {
+        "type": "integer"
+      },
+      "nameOfTheShow": {
+        "type": "text"
+      },
+      "imdbRating": {
+        "type": "double"
+      },
+      "ageOfViewers": {
+        "type": "integer"
+      },
+      "language": {
+        "type": "text"
+      },
+      "genre": {
+        "type": "text"
+      },
+      "noOfSeasonsAvailable": {
+        "type": "integer"
+      },
+      "yearOfRelease": {
+        "type": "text"
+      },
+      "madeInCountry": {
+        "type": "text"
+      }
+    }
+  }   
+}
+
+GET tvshows/_search
+{
+  "size": 250,
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+GET tvshow/_search
+{
+  "query": {
+    "range": {
+      "IMDb rating": {
+        "gte": 8.8,
+        "lte": 9.0
+      }
+    }
+  }
+}
+
+
+GET tvshow/_search
+{
+  "size": 0,
+  "query": {
+    "match_all": {}
+  },
+  "aggs": {
+    "agg1": {},
+    "agg2": {}
+  }
+}
+
+
+
+GET tvshows/_search
+{
+  "size": 250,
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+
+DELETE tvshows
+
+
+GET _cat/indices?v
+
+
+
+
