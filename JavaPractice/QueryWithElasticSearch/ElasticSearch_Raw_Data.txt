@@ -1,0 +1,200 @@
+GET _cat/indices?v
+
+PUT programmingdata
+
+DELETE programmingdata
+
+
+GET programmingdata/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+PUT programmingdata/_doc/1
+{
+  "lang":"Java",
+  "topic":"Collection",
+  "Statement":"In java we are using collection framework to manipulate the object"
+}
+
+PUT programmingdata/_doc/2
+{
+  "lang":"Java",
+  "topic":"Collection",
+  "class":"arraylist",
+  "Statement":"In java we are using collection framework to manipulate the object"
+}
+
+PUT programmingdata/_doc/3
+{
+  "lang":"java 8",
+  "topic":"java",
+  "Interface":"comparator",
+  "Statement":"In java we are using comparator to sort our data it is very useful feature to sort"
+}
+
+PUT programmingdata/_doc/4
+{
+  "lang":"java",
+  "topic":"springboot",
+  "Statement":"Springboot is widely used to make API"
+}
+
+
+PUT programmingdata/_doc/5
+{
+  "lang":"Java",
+  "topic":"StreamApi",
+  "function":"sum",
+  "Statement":"Sum function is used to add the stream of numbers"
+}
+
+
+PUT programmingdata/_doc/6
+{
+  "lang":"Java",
+  "topic":"Lambda",
+  "function":"Functional Interface",
+  "Statement":"Lambda is used to enable the functional programming"
+}
+
+
+PUT programmingdata/_doc/7
+{
+  "lang":"Java",
+  "topic":"Overriding & Override",
+  "Statement":"In oops programming we can do a overriding and override a method"
+}
+
+PUT programmingdata/_doc/8
+{
+  "lang":"Core Java",
+  "topic":"final",
+  "Statement":"final is access modifier that is used with class,variable and method"
+}
+
+PUT programmingdata/_doc/9
+{
+  "lang":"React",
+  "topic":"webpack",
+  "Statement":"Web-pack will make our javascript code shorter and help to bundle our js, css and html code"
+}
+
+
+PUT programmingdata/_doc/10
+{
+  "lang":"Golang",
+  "topic":"Used",
+  "Statement":"Go is mostly used into backend"
+}
+
+
+PUT programmingdata/_doc/11
+{
+  "lang":"Flutter",
+  "topic":"Android App",
+  "Statement":"Android and IOS development is done in this platform"
+}
+
+
+PUT programmingdata/_doc/12
+{
+  "lang":"PHP",
+  "topic":"Data Engine",
+  "Statement":"Searching for data engine.................."
+}
+
+
+PUT programmingdata/_doc/13
+{
+  "lang":"Java",
+  "topic":"StreamApi",
+  "class":"max",
+  "Statement":"Java max function is used to findthe max from the stream of numbers"
+}
+
+
+PUT programmingdata/_doc/14
+{
+  "lang":"Java",
+  "topic":"StreamApi",
+  "class":"min",
+  "Statement":"Min function is used to find min from the stream of numbers"
+}
+
+PUT programmingdata/_doc/15
+{
+  "lang":"Java",
+  "topic":"StreamApi",
+  "class":"count",
+  "Statement":"Java Count function is used to count the streamming data"
+}
+
+
+PUT programmingdata/_doc/16
+{
+  "lang":"Android Java",
+  "topic":"StreamApi",
+  "class":"flatMap",
+  "Statement":"Java Flatmap function is used to Manipulate stream of stream"
+}
+
+
+
+GET programmingdata
+
+GET programmingdata/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+
+GET programmingdata/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "lang": "Java"
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+GET programmingdata/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match": {
+            "lang": "Java"
+          }
+        }
+      ],
+       "must": [
+        {
+          "match_phrase": {
+            "topic": {
+              "query": "streamapi"
+            }
+          }
+        },
+        {
+          "match_phrase": {
+            "Statement": "Java"
+          }
+        }
+      ]
+    }
+  }
+}
