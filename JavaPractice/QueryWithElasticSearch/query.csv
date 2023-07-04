@@ -1,15 +1,2 @@
-1,q=Java Developement&filter1=streamapi&filter2=sum
-1,q=Core Java&filter1=collection&filter2=arraylist
-1,q=java 8&filter1=streamapi&filter2=max
-1,q=core java&filter1=sorting&filter2=comparator
-1,q=Java &filter1=springboot&filter2=data
-2,q=JavaScript&filter1=function&filter2=add
-2,q=Java script&filter1=Es6&filter2=arrowfunction
-2,q=JavaScript&filter1=function&filter2=annonomusfunction
-2,q=Java Script&filter1=node&filter2=defination
-3,q=Amazon Service&filter1=Aws&filter2=deployment
-3,q=Amazon&filter1=webseries&filter2=panchayat-1
-4,q=mobile phone&filter1=Iphone&filter2=5MP
-4,q=Toys&filter1=Taddy&filter2=softcloths
-4,q=Bag&filter1=Regular&filter2=laptop
-4,q=Trimmer&filter1=beard&filter2=corded
+1,q=java&filter1=streamapi&filter2=Java
+1,q=Golang&filter1=Backend&filter2=go

@@ -233,17 +233,170 @@ GET programmingdata/_search
             "must": [
               {
                 "match": {
-                  "Statement": "is"
+                  "lang": "Golang"
                 }
               },
               {
                 "match_phrase": {
-                  "topic": "StreamApi"
+                  "topic": "Backend"
                 }
               },
               {
                 "match_phrase": {
-                  "class": "max"
+                  "Statement": "Go"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+GET programmingdata/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "should": [
+              {
+                "match": {
+                  "lang": "java"
+                }
+              },
+              {
+                "match_phrase": {
+                  "topic": "streamapi"
+                }
+              },
+              {
+                "match_phrase": {
+                  "Statement": "Java"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "bool": {
+            "should": [
+              {
+                "match": {
+                  "lang": "Golang"
+                }
+              },
+              {
+                "match_phrase": {
+                  "topic": "Backend"
+                }
+              },
+              {
+                "match_phrase": {
+                  "Statement": "Go"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+GET programmingdata/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "must": [
+              {
+                "match": {
+                  "lang": "java"
+                }
+              },
+              {
+                "match_phrase": {
+                  "topic": "streamapi"
+                }
+              },
+              {
+                "match_phrase": {
+                  "Statement": "Java"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "bool": {
+            "must": [
+              {
+                "match": {
+                  "lang": "Golang"
+                }
+              },
+              {
+                "match_phrase": {
+                  "topic": "Backend"
+                }
+              },
+              {
+                "match_phrase": {
+                  "Statement": "Go"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+
+
+GET programmingdata/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "bool": {
+            "should": [
+              {
+                "match": {
+                  "lang": "java"
+                }
+              },
+              {
+                "match": {
+                  "lang": "Android"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "bool": {
+            "should": [
+              {
+                "match": {
+                  "topic": "Icons"
+                }
+              },
+              {
+                "match": {
+                  "statement": "Go"
                 }
               }
             ]

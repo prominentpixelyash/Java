@@ -16,6 +16,7 @@ import java.util.*;
 public class QueryWithElasticSearch {
 
     public static Map<Integer, String> queryWithUserId = new HashMap<>();
+    public static Map<Integer, String> queryWithUserId2 = new HashMap<>();
 
     public RestHighLevelClient getClient() {
         URI uri;
@@ -42,21 +43,6 @@ public class QueryWithElasticSearch {
             } else {
                 queryWithUserId.put(Integer.valueOf(data[0]), data[1]);
             }
-        }
-
-    }
-
-    public void myShouldQueryWithMustForFilter() {
-
-        try (RestHighLevelClient client = getClient()) {
-            QueryBuilder q = QueryBuilders.boolQuery().
-                    should(QueryBuilders.matchQuery("lang", "Java")).
-                    must(QueryBuilders.matchPhraseQuery("topic", "streamapi")
-                    ).must(QueryBuilders.matchPhraseQuery("Statement", "Java"));
-            SearchResponse response = client.search(new SearchRequest().source(new SearchSourceBuilder().query(q)), RequestOptions.DEFAULT);
-            printSearchResponse(response);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
 
     }
@@ -116,20 +102,6 @@ public class QueryWithElasticSearch {
 
     }
 
-
-    public void getTextQueryWithShould(String query) {
-
-        try (RestHighLevelClient client = getClient()) {
-            QueryBuilder q = QueryBuilders.boolQuery().should(QueryBuilders.matchQuery("lang", query));
-            SearchResponse response = client.search(new SearchRequest().source(new SearchSourceBuilder().query(q)), RequestOptions.DEFAULT);
-            printSearchResponse(response);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-
-    }
-
     public void printSearchResponse(SearchResponse response) {
 
         SearchHit[] hits = response.getHits().getHits();
@@ -176,14 +148,10 @@ public class QueryWithElasticSearch {
             List<String> listOfFilter1 = qwe.getTextFromArray(searchFilter1);
             List<String> listOfFilter2 = qwe.getTextFromArray(searchFilter2);
 
-            for(int i=0;i<listOfQuery.size();i++){
-                qwe.myNestedShould(listOfQuery,listOfFilter1,listOfFilter2);
-            }
-
-            for(int i=0;i<listOfQuery.size();i++){
-                qwe.myNestedMust(listOfQuery,listOfFilter1,listOfFilter2);
-            }
+            qwe.myNestedShould(listOfQuery,listOfFilter1,listOfFilter2);
+            qwe.myNestedMust(listOfQuery,listOfFilter1,listOfFilter2);
         }
+
 
     }
 }
