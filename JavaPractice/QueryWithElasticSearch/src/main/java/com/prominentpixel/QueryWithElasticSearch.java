@@ -16,7 +16,6 @@ import java.util.*;
 public class QueryWithElasticSearch {
 
     public static Map<Integer, String> queryWithUserId = new HashMap<>();
-    public static Map<Integer, String> queryWithUserId2 = new HashMap<>();
 
     public RestHighLevelClient getClient() {
         URI uri;
