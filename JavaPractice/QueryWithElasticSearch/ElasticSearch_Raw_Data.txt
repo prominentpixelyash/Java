@@ -198,3 +198,58 @@ GET programmingdata/_search
     }
   }
 }
+
+
+
+
+GET programmingdata/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "bool": {
+            "must": [
+              {
+                "match": {
+                  "lang": "java"
+                }
+              },
+              {
+                "match_phrase": {
+                  "topic": "streamapi"
+                }
+              },
+              {
+                "match_phrase": {
+                  "Statement": "Java"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "bool": {
+            "must": [
+              {
+                "match": {
+                  "Statement": "is"
+                }
+              },
+              {
+                "match_phrase": {
+                  "topic": "StreamApi"
+                }
+              },
+              {
+                "match_phrase": {
+                  "class": "max"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

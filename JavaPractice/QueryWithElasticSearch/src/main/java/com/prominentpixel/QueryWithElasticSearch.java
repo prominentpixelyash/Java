@@ -72,13 +72,40 @@ public class QueryWithElasticSearch {
             for (int i=0;i<textQuery.size();i++){
                 BoolQueryBuilder boolQueryBuilder=QueryBuilders.boolQuery();
                 MatchQueryBuilder mqb1=QueryBuilders.matchQuery("lang",textQuery.get(i));
-                MatchPhraseQueryBuilder mqb2=QueryBuilders.matchPhraseQuery("topic",textQuery.get(i));
-                MatchPhraseQueryBuilder mqb3=QueryBuilders.matchPhraseQuery("Statement",textQuery.get(i));
+                MatchPhraseQueryBuilder mqb2=QueryBuilders.matchPhraseQuery("topic",filter1.get(i));
+                MatchPhraseQueryBuilder mqb3=QueryBuilders.matchPhraseQuery("Statement",filter2.get(i));
                 boolQueryBuilder.must(mqb1);
                 boolQueryBuilder.must(mqb2);
                 boolQueryBuilder.must(mqb3);
 
                 main.should(boolQueryBuilder);
+            }
+
+            SearchResponse response = client.search(new SearchRequest().source(new SearchSourceBuilder().query(main)), RequestOptions.DEFAULT);
+            printSearchResponse(response);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public void myNestedMust(List<String> textQuery,List<String>  filter1,List<String>  filter2) {
+
+        try (RestHighLevelClient client = getClient()) {
+
+
+            BoolQueryBuilder main =QueryBuilders.boolQuery();
+
+            for (int i=0;i<textQuery.size();i++){
+                BoolQueryBuilder boolQueryBuilder=QueryBuilders.boolQuery();
+                MatchQueryBuilder mqb1=QueryBuilders.matchQuery("lang",textQuery.get(i));
+                MatchPhraseQueryBuilder mqb2=QueryBuilders.matchPhraseQuery("topic",filter1.get(i));
+                MatchPhraseQueryBuilder mqb3=QueryBuilders.matchPhraseQuery("Statement",filter2.get(i));
+                boolQueryBuilder.should(mqb1);
+                boolQueryBuilder.should(mqb2);
+                boolQueryBuilder.should(mqb3);
+
+                main.must(boolQueryBuilder);
             }
 
             SearchResponse response = client.search(new SearchRequest().source(new SearchSourceBuilder().query(main)), RequestOptions.DEFAULT);
@@ -153,6 +180,9 @@ public class QueryWithElasticSearch {
                 qwe.myNestedShould(listOfQuery,listOfFilter1,listOfFilter2);
             }
 
+            for(int i=0;i<listOfQuery.size();i++){
+                qwe.myNestedMust(listOfQuery,listOfFilter1,listOfFilter2);
+            }
         }
 
     }
