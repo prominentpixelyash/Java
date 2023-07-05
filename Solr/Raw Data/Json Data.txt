@@ -1,0 +1,27 @@
+# Post Document
+
+{
+   "sNo":505,
+   "NameOfTheShow": "Human the Legend 5",
+   "YearOfRelease": 2018,
+   "NoOfSeasonsAvailable": 5,
+   "Language": "Hindi",
+   "Genre": "Religion",
+   "IMDbRating": 10.0,
+   "AgeOfViewers": "1+"
+}
+
+
+# Update Document with Id
+
+{
+   "id":"ef4f5c8b-1a95-4ff5-b2d8-ae06dfd15ea2",
+   "sNo":505,
+   "NameOfTheShow": "Human the Legend 5",
+   "YearOfRelease": 2018,
+   "NoOfSeasonsAvailable": 5,
+   "Language": "Hindi",
+   "Genre": "Religion",
+   "IMDbRating": 11.0,
+   "AgeOfViewers": "1+"
+}
