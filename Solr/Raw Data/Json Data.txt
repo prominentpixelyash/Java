@@ -25,3 +25,29 @@
    "IMDbRating": 11.0,
    "AgeOfViewers": "1+"
 }
+
+
+# Delete Document Based on Id(Field)
+
+{
+'delete': 
+   {'query': 
+        'filter(id:(db85bf18-b004-4a5f-8a27-adb2475dd105))'
+   }
+}
+
+
+
+# Update Document with Set
+
+{
+        "AgeOfViewers":{"set" : "All"},
+        "id":"e6a9e4df-1457-40da-8f3e-050b8641ccdb"
+}
+
+
+
+{
+        "IMDbRating":{"inc":1.0},
+        "id":"bedff7eb-4b4c-4ad9-9ba8-313dc3571595"
+}
